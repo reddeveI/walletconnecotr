@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
+        <RootNamespace>WalletConnectior.Xml</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <None Remove="schemes\WAY4UFX_Validation.xsd" />
+    </ItemGroup>
+
+</Project>

@@ -11,6 +11,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WalletConnector.Domain", "W
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WalletConnector.Infrastructure", "WalletConnector.Infrastructure\WalletConnector.Infrastructure.csproj", "{46DE5F50-D350-4BC3-8730-54C1BA9E7D75}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WalletConnector.Xml", "WalletConnector.Xml\WalletConnector.Xml.csproj", "{0E921717-CC86-4CA1-87FD-D7F5FE5A50F2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WalletConnector.Xml.Tests", "WalletConnector.Xml.Tests\WalletConnector.Xml.Tests.csproj", "{E2BC268F-FB17-4F58-9B48-4C430585CCE3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +37,14 @@ Global
 		{46DE5F50-D350-4BC3-8730-54C1BA9E7D75}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{46DE5F50-D350-4BC3-8730-54C1BA9E7D75}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{46DE5F50-D350-4BC3-8730-54C1BA9E7D75}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0E921717-CC86-4CA1-87FD-D7F5FE5A50F2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0E921717-CC86-4CA1-87FD-D7F5FE5A50F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0E921717-CC86-4CA1-87FD-D7F5FE5A50F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0E921717-CC86-4CA1-87FD-D7F5FE5A50F2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E2BC268F-FB17-4F58-9B48-4C430585CCE3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E2BC268F-FB17-4F58-9B48-4C430585CCE3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E2BC268F-FB17-4F58-9B48-4C430585CCE3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E2BC268F-FB17-4F58-9B48-4C430585CCE3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
