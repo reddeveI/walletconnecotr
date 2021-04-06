@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using WalletConnector.Application.Accounts.Commands.CreateAccount;
 using WalletConnector.Application.Accounts.Queries.GetAccountInfo;
 
 namespace WalletConnector.Api.Controllers
@@ -21,6 +22,13 @@ namespace WalletConnector.Api.Controllers
         public async Task<AccountInfoVm> GetAccountInfo(GetAccountInfoQuery query)
         {
             return await Mediator.Send(query);
+        }
+
+
+        [HttpPost, Route("wallet/user/new")]
+        public async Task<int> CreateAccount(CreateAccountCommand command)
+        {
+            return await Mediator.Send(command);
         }
 
 

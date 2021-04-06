@@ -23,10 +23,22 @@ namespace WalletConnector.Infrastructure.WalletService.Openway
             _config = config.Value;
         }
 
+        
+
         public async Task<AccountInfoResponseDto> GetAccountInfo(string phone)
         {
-            var accountInformationRequest = new InformationRequest(new AccountInfoRequestDto { Phone = phone });
-            var xmlMessage = accountInformationRequest.ToXElement().ToString();
+            var request = InformationBuilder
+                .CreateInformationRequest()
+                .GenerateMessageId()
+                .AddSourceAttribute()
+                .GenerateRegNumber()
+                .AddObjectType()
+                .AddActionType()
+                .AddResultDetails()
+                .AddFilters()
+                .AddPhoneNumber(phone);
+
+            var xmlMessage = request.ToXElement().ToString();
 
             var response = await _sendWalletRequest(url: _config.Url, xmlMessage: xmlMessage);
 
@@ -37,12 +49,18 @@ namespace WalletConnector.Infrastructure.WalletService.Openway
                 Actual = new AccountInfoResponseDto.ActualWallet
                 {
                     Wallets = new List<AccountInfoResponseDto.Wallet>()
-                } 
+                }
             };
 
             info.Actual.Wallets.Add(new AccountInfoResponseDto.Wallet { Pan = result.MsgData.Information.DataRs.ContractRs[0].RsContract.ContractIdt.ContractNumber });
 
             return info;
+        }
+
+
+        public async Task<int> CreateAccount(string phone, string description)
+        {
+            return 1;
         }
 
         private async Task<string> _sendWalletRequest(string url, string xmlMessage)
