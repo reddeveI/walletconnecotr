@@ -13,12 +13,10 @@ namespace WalletConnectior.Xml.Mapping
         
         public ClientInfoMap ClientInfoMap { get; } = new ClientInfoMap(XNamespace.None.GetName("ClientInfo"));
 
-        public ClientInfo FromXml(XElement e)
-        {
-            return ClientInfoMap.FromXml(
+        public ClientInfo FromXml(XElement e) =>
+            ClientInfoMap.FromXml(
                 e.Element(ClientIDT)?
                     .Element(ClientInfoMap.ElementName)
                 );
-        }
     }
 }
