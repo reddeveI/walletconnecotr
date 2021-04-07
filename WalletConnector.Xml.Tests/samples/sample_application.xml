@@ -1,0 +1,33 @@
+﻿<UFXMsg scheme="WAY4Appl" msg_type="Application" direction="Rq" version="2.0">
+    <MsgId>90000a89-e988-476c-9e9d-90444159b612</MsgId>
+    <Source app="RSMFRONT"/>
+    <MsgData>
+        <Application>
+            <RegNumber>339d4551-072a-45f3-b6d1-c0d1973b5312</RegNumber>
+            <Institution>9999</Institution>
+            <InstitutionIDType>Branch</InstitutionIDType>
+            <OrderDprt>9901</OrderDprt>
+            <ObjectType>Client</ObjectType>
+            <ActionType>AddOrUpdate</ActionType>
+            <ResultDtls>
+                <Parm>
+                    <ParmCode>AcceptRq</ParmCode>
+                    <Value>Y</Value>
+                </Parm>
+                <Parm>
+                    <ParmCode>Response</ParmCode>
+                    <Value>Y</Value>
+                </Parm>
+            </ResultDtls>
+            <ProductCategory>Issuing</ProductCategory>
+            <ObjectFor>
+                <ClientIDT>
+                    <ClientInfo>
+                        <ClientNumber>77028352141</ClientNumber>
+                        <ShortName>77028352141</ShortName>
+                    </ClientInfo>
+                </ClientIDT>
+            </ObjectFor>
+        </Application>
+    </MsgData>
+</UFXMsg>
