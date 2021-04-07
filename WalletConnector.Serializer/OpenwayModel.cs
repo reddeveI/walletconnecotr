@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using System.Text;
 using System.Xml.Serialization;
 
-namespace WalletConnector.Infrastructure.WalletService.Openway
+namespace WalletConnector.Serializer
 {
-    
     public class OpenwayModel
     {
         [XmlAttribute(AttributeName = "scheme")]
@@ -433,12 +432,4 @@ namespace WalletConnector.Infrastructure.WalletService.Openway
         }
 
     }
-
-
-    
-    
-
-    
-
-    
 }

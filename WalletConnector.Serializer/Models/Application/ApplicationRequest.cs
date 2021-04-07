@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Xml.Serialization;
-using WalletConnector.Infrastructure.Helpers;
-using static WalletConnector.Infrastructure.WalletService.Openway.OpenwayModel;
+using WalletConnector.Serializer.Helpers;
+using static WalletConnector.Serializer.OpenwayModel;
 
-namespace WalletConnector.Infrastructure.WalletService.Openway.Models.Application
+namespace WalletConnector.Serializer.Models.Application
 {
     [XmlRoot(ElementName = "UFXMsg")]
     public class ApplicationRequest : OpenwayModel

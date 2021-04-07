@@ -1,7 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Reflection;
-using WalletConnector.Infrastructure.WalletService.AutoMapper;
 
 namespace WalletConnector.Infrastructure
 {
@@ -9,7 +8,6 @@ namespace WalletConnector.Infrastructure
     {
         public static IServiceCollection AddInfrastructure(this IServiceCollection services)
         {
-            services.AddAutoMapper(new Assembly[] { typeof(AutoMapperProfile).GetTypeInfo().Assembly });
             return services;
         }
     }

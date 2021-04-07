@@ -2,11 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Xml.Serialization;
-using WalletConnector.Application.Infrastructure.Services.WalletService;
-using static WalletConnector.Infrastructure.WalletService.Openway.Models.Information.InformationRequest;
-using static WalletConnector.Infrastructure.WalletService.Openway.OpenwayModel;
+using static WalletConnector.Serializer.OpenwayModel;
 
-namespace WalletConnector.Infrastructure.WalletService.Openway.Models.Information
+namespace WalletConnector.Serializer.Models.Information
 {
     [XmlRoot(ElementName = "UFXMsg")]
     public class InformationRequest : OpenwayModel

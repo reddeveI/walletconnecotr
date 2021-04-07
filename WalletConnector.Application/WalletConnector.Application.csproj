@@ -19,4 +19,8 @@
     <Folder Include="Interfaces\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\WalletConnector.Serializer\WalletConnector.Serializer.csproj" />
+  </ItemGroup>
+
 </Project>

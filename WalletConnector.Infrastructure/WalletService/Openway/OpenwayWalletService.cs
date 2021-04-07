@@ -7,9 +7,9 @@ using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using WalletConnector.Application.Infrastructure.Services.WalletService;
-using WalletConnector.Infrastructure.WalletService.Openway.Models;
-using WalletConnector.Infrastructure.WalletService.Openway.Models.Application;
-using WalletConnector.Infrastructure.WalletService.Openway.Models.Information;
+using WalletConnector.Serializer;
+using WalletConnector.Serializer.Models.Application;
+using WalletConnector.Serializer.Models.Information;
 
 namespace WalletConnector.Infrastructure.WalletService.Openway
 {

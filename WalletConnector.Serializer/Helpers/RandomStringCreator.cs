@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace WalletConnector.Infrastructure.Helpers
+namespace WalletConnector.Serializer.Helpers
 {
     public class RandomStringCreator
     {
