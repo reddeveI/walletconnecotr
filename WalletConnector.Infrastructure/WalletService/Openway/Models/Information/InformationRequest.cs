@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Xml.Serialization;
 using WalletConnector.Application.Infrastructure.Services.WalletService;
+using static WalletConnector.Infrastructure.WalletService.Openway.Models.Information.InformationRequest;
 using static WalletConnector.Infrastructure.WalletService.Openway.OpenwayModel;
 
 namespace WalletConnector.Infrastructure.WalletService.Openway.Models.Information
@@ -10,86 +11,67 @@ namespace WalletConnector.Infrastructure.WalletService.Openway.Models.Informatio
     [XmlRoot(ElementName = "UFXMsg")]
     public class InformationRequest : OpenwayModel
     {
-        public InformationRequest()
-        {
+    }
 
-        }
-        public InformationRequest(AccountInfoRequestDto operationRequest)
+    public static class InformationBuilder
+    {
+        public static InformationRequest CreateDefaultInformation()
         {
-            Scheme = "WAY4Appl";
-            MsgType = "Information";
-            Direction = "Rq";
-            Version = "2.0";
-            MsgId = Guid.NewGuid();
-            Source = new SourceAttribute
-            {
-                App = "RSMFRONT"
-            };
-            MsgData = new MsgData
+            var data = new InformationRequest();
+            data.Scheme = "WAY4Appl";
+            data.MsgType = "Information";
+            data.Direction = "Rq";
+            data.Version = "2.0";
+            data.MsgId = Guid.NewGuid();
+            data.Source = new SourceAttribute { App = "RSMFRONT" };
+            data.MsgData = new MsgDataType
             {
                 Information = new InformationType
                 {
                     RegNumber = Guid.NewGuid(),
-                    ActionType = "Inquiry",
-                    ResultDtls = new ResultDtls
-                    {
-                        Parm = new List<Parm>()
-                        {
-                            new Parm { ParmCode = "Status", Value = "Y" },
-                            new Parm { ParmCode = "Client", Value = "Y" },
-                            new Parm { ParmCode = "Balance", Value = "WALLET" },
-                            new Parm { ParmCode = "Product", Value = "Y" },
-                            new Parm { ParmCode = "ContractClassifier", Value = "Y" },
-                            new Parm { ParmCode = "ExtraRs", Value = "USAGE_REMAIN;BALANCE_SECTIONS;" }
-                        },
-                        Filter = new Filter
-                        {
-                            Type = "ContractList",
-                            Code = "IssuingContracts"
-                        }
-                    },
-                    ObjectFor = new ObjectFor
-                    {
-                        ClientIdt = new ClientIdt
-                        {
-                            ClientInfo = new ClientInfo
-                            {
-                                ClientNumber = operationRequest.Phone,
-                            }
-                        }
-                    },
                     ObjectType = "Contract",
+                    ActionType = "Inquiry"
                 }
             };
+
+            return data;
         }
 
-        [XmlAttribute(AttributeName = "scheme")]
-        public string Scheme { get; set; }
-
-        [XmlAttribute(AttributeName = "msg_type")]
-        public string MsgType { get; set; }
-
-        /// <remarks/>
-        [XmlAttribute(AttributeName = "direction")]
-        public string Direction { get; set; }
-
-        /// <remarks/>
-        [XmlAttribute(AttributeName = "version")]
-        public string Version { get; set; }
-
-        [XmlElement("MsgId")]
-        public Guid MsgId { get; set; }
-
-        [XmlElement(ElementName = "Source")]
-        public SourceAttribute Source { get; set; }
-
-        public class SourceAttribute
+        public static InformationRequest AddResultDetails(this InformationRequest data)
         {
-            [XmlAttribute(AttributeName = "app")]
-            public string App { get; set; }
+            data.MsgData.Information.ResultDtls = new ResultDtls
+            {
+                Parm = new List<Parm>()
+                {
+                    new Parm { ParmCode = "Status", Value = "Y" },
+                    new Parm { ParmCode = "Client", Value = "Y" },
+                    new Parm { ParmCode = "Balance", Value = "WALLET" },
+                    new Parm { ParmCode = "Product", Value = "Y" },
+                    new Parm { ParmCode = "ContractClassifier", Value = "Y" },
+                    new Parm { ParmCode = "ExtraRs", Value = "USAGE_REMAIN;BALANCE_SECTIONS;" }
+                },
+            };
+            data.MsgData.Information.ResultDtls.Filter = new Filter
+            {
+                Type = "ContractList",
+                Code = "IssuingContracts"
+            };
+            return data;
         }
 
-        [XmlElement("MsgData")]
-        public MsgData MsgData { get; set; }
+        public static InformationRequest AddPhoneNumber(this InformationRequest data, string phone)
+        {
+            data.MsgData.Information.ObjectFor = new ObjectFor
+            {
+                ClientIdt = new ClientIdt
+                {
+                    ClientInfo = new ClientInfo
+                    {
+                        ClientNumber = phone
+                    }
+                }
+            };
+            return data;
+        }
     }
 }

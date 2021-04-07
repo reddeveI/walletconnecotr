@@ -8,9 +8,36 @@ namespace WalletConnector.Infrastructure.WalletService.Openway
     
     public class OpenwayModel
     {
-        
+        [XmlAttribute(AttributeName = "scheme")]
+        public string Scheme { get; set; }
 
-        public class MsgData
+        [XmlAttribute(AttributeName = "msg_type")]
+        public string MsgType { get; set; }
+
+        /// <remarks/>
+        [XmlAttribute(AttributeName = "direction")]
+        public string Direction { get; set; }
+
+        /// <remarks/>
+        [XmlAttribute(AttributeName = "version")]
+        public string Version { get; set; }
+
+        [XmlElement("MsgId")]
+        public Guid MsgId { get; set; }
+
+        [XmlElement(ElementName = "Source")]
+        public SourceAttribute Source { get; set; }
+
+        public class SourceAttribute
+        {
+            [XmlAttribute(AttributeName = "app")]
+            public string App { get; set; }
+        }
+
+        [XmlElement("MsgData")]
+        public MsgDataType MsgData { get; set; }
+
+        public class MsgDataType
         {
             [XmlElement("Application")]
             public ApplicationType Application { get; set; }
@@ -304,6 +331,13 @@ namespace WalletConnector.Infrastructure.WalletService.Openway
 
         public class InformationType
         {
+            public InformationType() { }
+
+            public InformationType(string actionType)
+            {
+                ActionType = actionType;
+            }
+
             [XmlElement("DataRs")]
             public DataRs DataRs { get; set; }
 
