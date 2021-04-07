@@ -9,12 +9,7 @@ using WalletConnector.Application.Infrastructure.Services.WalletService;
 
 namespace WalletConnector.Application.Accounts.Commands.CreateAccount
 {
-    public class CreateAccountCommand : IRequest<int>
-    {
-        public string Phone { get; set; }
-
-        public string Description { get; set; }
-    }
+    public record CreateAccountCommand(string Phone, string Description) : IRequest<int>;
 
     public class CreateAccountCommandHandler : IRequestHandler<CreateAccountCommand, int>
     {
