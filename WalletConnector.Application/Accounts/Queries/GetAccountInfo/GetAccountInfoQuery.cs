@@ -29,9 +29,9 @@ namespace WalletConnector.Application.Accounts.Queries.GetAccountInfo
         {
             var getInfoRequest = await _walletService.GetAccountInfo(request.Phone);
 
-            //var response = _mapper.Map<AccountInfoVm>(getInfoRequest);
+            var response = _mapper.Map<AccountInfoVm>(getInfoRequest);
 
-            return new AccountInfoVm();
+            return response;
         }
     }
 }

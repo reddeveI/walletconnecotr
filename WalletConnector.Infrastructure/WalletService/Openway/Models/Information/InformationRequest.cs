@@ -11,6 +11,7 @@ namespace WalletConnector.Infrastructure.WalletService.Openway.Models.Informatio
     [XmlRoot(ElementName = "UFXMsg")]
     public class InformationRequest : OpenwayModel
     {
+        public string Test { get; set; }
     }
 
     public static class InformationBuilder

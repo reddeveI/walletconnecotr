@@ -8,17 +8,26 @@ namespace WalletConnector.Application.Accounts.Queries.GetAccountInfo
 {
     public class AccountInfoVm
     {
-        public ActualWallet Actual { get; set; }
+        public List<ActualWallet> Actual { get; set; }
 
         public class ActualWallet
         {
-            public List<Wallet> Wallets { get; set; }
+            public UserWallet Wallet { get; set; }
 
         }
 
-        public class Wallet
+        public class UserWallet
         {
-            public string Pan { get; set; }
+            public string Balance { get; set; }
+
+            public UserData UserData { get; set; } 
+        }
+
+        public class UserData
+        {
+            public string Iin { get; set; }
+
+            public string FirstName { get; set; }
         }
     }
 }

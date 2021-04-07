@@ -57,6 +57,9 @@ namespace WalletConnector.Infrastructure.WalletService.Openway
             [XmlElement("InstitutionIDType")]
             public string InstitutionIdType { get; set; }
 
+            [XmlElement("OrderDprt")]
+            public string OrderDepartment { get; set; }
+
             [XmlElement("ObjectType")]
             public string ObjectType { get; set; }
 
@@ -80,7 +83,6 @@ namespace WalletConnector.Infrastructure.WalletService.Openway
 
             [XmlElement("Status")]
             public Status Status { get; set; }
-
         }
 
         public class ResultDtls
@@ -109,6 +111,12 @@ namespace WalletConnector.Infrastructure.WalletService.Openway
         public class AdditionalClient
         {
             public ClientInfo ClientInfo { get; set; }
+
+            [XmlElement("BaseAddress")]
+            public BaseAddress BaseAddress { get; set; }
+
+            [XmlElement("DateOpen")]
+            public string DateOpen { get; set; }
         }
 
         public class Parm
@@ -298,6 +306,9 @@ namespace WalletConnector.Infrastructure.WalletService.Openway
         {
             [XmlElement("Contract")]
             public Contract RsContract { get; set; }
+
+            [XmlElement("Info")]
+            public RsInfo RsInfo { get; set; }
         }
 
         public class Contract
@@ -310,6 +321,58 @@ namespace WalletConnector.Infrastructure.WalletService.Openway
 
             [XmlElement("Product")]
             public Product Product { get; set; }
+        }
+
+        public class RsInfo
+        {
+            [XmlElement("Balances")]
+            public Balances Balances { get; set; }
+
+            [XmlElement("Classifiers")]
+            public Classifiers Classifiers { get; set; }
+
+            [XmlElement("Status")]
+            public ContractStatus Status { get; set; }
+        }
+
+        public class Balances
+        {
+            [XmlElement("Balance")]
+            public List<Balance> Balance { get; set; }
+        }
+
+        public class Balance
+        {
+            [XmlElement("Name")]
+            public string Name { get; set; }
+
+            [XmlElement("Type")]
+            public string Type { get; set; }
+
+            [XmlElement("Amount")]
+            public string Amount { get; set; }
+
+            [XmlElement("Currency")]
+            public string Currency { get; set; }
+
+        }
+
+        public class Classifiers
+        {
+            [XmlElement("Classifier")]
+            public List<Classifier> Classifier { get; set; }
+        }
+
+        public class ContractStatus
+        {
+            [XmlElement("StatusClass")]
+            public string StatusClass { get; set; }
+
+            [XmlElement("StatusCode")]
+            public string StatusCode { get; set; }
+
+            [XmlElement("StatusDetails")]
+            public string StatusDetails { get; set; }
         }
 
         public class ContractIdt

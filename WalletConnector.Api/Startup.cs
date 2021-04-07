@@ -1,17 +1,11 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using WalletConnector.Application;
 using WalletConnector.Application.Infrastructure.Services.WalletService;
+using WalletConnector.Infrastructure;
 using WalletConnector.Infrastructure.WalletService;
 using WalletConnector.Infrastructure.WalletService.Openway;
 
@@ -31,6 +25,7 @@ namespace WalletConnector.Api
         {
             services.AddControllers();
             services.AddApplication();
+            services.AddInfrastructure();
             services.AddWalletService(Configuration);
         }
 
