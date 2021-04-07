@@ -3,6 +3,7 @@ using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Net;
+using System.Threading;
 using System.Threading.Tasks;
 using WalletConnector.Application.Infrastructure.Services.WalletService;
 using WalletConnector.Infrastructure.WalletService.Openway.Models;
@@ -28,14 +29,8 @@ namespace WalletConnector.Infrastructure.WalletService.Openway
         public async Task<AccountInfoResponseDto> GetAccountInfo(string phone)
         {
             var request = InformationBuilder
-                .CreateInformationRequest()
-                .GenerateMessageId()
-                .AddSourceAttribute()
-                .GenerateRegNumber()
-                .AddObjectType()
-                .AddActionType()
+                .CreateDefaultInformation()
                 .AddResultDetails()
-                .AddFilters()
                 .AddPhoneNumber(phone);
 
             var xmlMessage = request.ToXElement().ToString();
@@ -58,7 +53,7 @@ namespace WalletConnector.Infrastructure.WalletService.Openway
         }
 
 
-        public async Task<int> CreateAccount(string phone, string description)
+        public async Task<int> CreateAccount(string phone, string description, CancellationToken cancellationToken)
         {
             return 1;
         }

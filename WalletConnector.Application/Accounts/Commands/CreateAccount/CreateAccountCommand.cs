@@ -27,9 +27,9 @@ namespace WalletConnector.Application.Accounts.Commands.CreateAccount
             _mapper = mapper;
         }
 
-        public async Task<int> Handle(CreateAccountCommand request, CancellationToken cancellationToken)
+        public Task<int> Handle(CreateAccountCommand request, CancellationToken cancellationToken)
         {
-            var createAccountRequest = await _walletService.CreateAccount(request.Phone, request.Description);
+            var createAccountRequest = _walletService.CreateAccount(request.Phone, request.Description, cancellationToken);
 
             return createAccountRequest;
         }
