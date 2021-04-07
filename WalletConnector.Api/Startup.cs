@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using WalletConnector.Api.Helpers;
 using WalletConnector.Application;
 using WalletConnector.Application.Infrastructure.Services.WalletService;
 using WalletConnector.Infrastructure;
@@ -23,7 +24,11 @@ namespace WalletConnector.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services.AddControllers().AddJsonOptions(options =>
+            {
+                options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
+                options.JsonSerializerOptions.PropertyNamingPolicy = new SnakeCaseJsonNamingPolicy();
+            });
             services.AddApplication();
             services.AddInfrastructure();
             services.AddWalletService(Configuration);
