@@ -26,13 +26,10 @@ namespace WalletConnector.Api.Controllers
             return await _mediator.Send(query);
         }
 
-
         [HttpPost, Route("wallet/user/new")]
         public async Task<int> CreateAccount([FromBody] CreateAccountCommand command)
         {
             return await _mediator.Send(command);
         }
-
-
     }
 }

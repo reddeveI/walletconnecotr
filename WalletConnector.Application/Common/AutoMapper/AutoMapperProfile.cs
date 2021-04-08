@@ -19,16 +19,37 @@ namespace WalletConnector.Application.Common.AutoMapper
                         {
                             new ActualWallet
                             {
-                                Wallet = new UserWallet
+                                Wallet = new()
                                 {
                                     Balance = src.Wallet.Balance,
-                                    UserData = new UserData { Iin = src.User.Iin, FirstName = src.User.FirstName }
+                                    Pan = src.Wallet.Balance,
+                                    CardId  = src.Wallet.CardId,
+                                    IssContractId = src.Wallet.IssContractId,
+                                    UserData = new() 
+                                    { 
+                                        Iin = src.User.Iin, 
+                                        FirstName = src.User.FirstName,
+                                        LastName = src.User.LastName,
+                                        MiddleName = src.User.MiddleName,
+                                        Gender = src.User.Gender,
+                                        BirthDate = src.User.BirthDate,
+                                        Address = src.User.Address,
+                                        City = src.User.City,
+                                        DocumentNumber = src.User.DocumentNumber,
+                                        DocumentType = src.User.DocumentType,
+                                        IssuedBy = src.User.IssuedBy,
+                                        IssueDate = src.User.IssueDate,
+                                        ExpiryDate = src.User.ExpiryDate
+                                    }
                                 }
                             }
                         }));
 
 
             CreateMap<InformationRequest, AccountInfoResponseDto>()
+                 .ForPath(dest =>
+                    dest.Status,
+                    opt => opt.MapFrom(src => int.Parse(src.MsgData.Information.Status.RespCode)))
                 .ForPath(dest =>
                     dest.User.Phone,
                     opt => opt.MapFrom(src => src.MsgData.Information.DataRs.ContractRs.FirstOrDefault().RsContract.ContractIdt.ContractNumber))
@@ -42,7 +63,7 @@ namespace WalletConnector.Application.Common.AutoMapper
                     dest.User.FirstName,
                     opt => opt.MapFrom(src => src.MsgData.Information.DataRs.ContractRs.FirstOrDefault().RsContract.ContractIdt.Client.ClientInfo.FirstName))
                 .ForPath(dest =>
-                    dest.User.Phone,
+                    dest.User.MiddleName,
                     opt => opt.MapFrom(src => src.MsgData.Information.DataRs.ContractRs.FirstOrDefault().RsContract.ContractIdt.Client.ClientInfo.MiddleName))
                 .ForPath(dest =>
                     dest.User.Gender,
@@ -60,8 +81,38 @@ namespace WalletConnector.Application.Common.AutoMapper
                     dest.User.DocumentNumber,
                     opt => opt.MapFrom(src => src.MsgData.Information.DataRs.ContractRs.FirstOrDefault().RsContract.ContractIdt.Client.ClientInfo.RegNumber))
                 .ForPath(dest =>
+                    dest.User.IssuedBy,
+                    opt => opt.MapFrom(src => GetIssueData(src.MsgData.Information.DataRs.ContractRs.FirstOrDefault().RsContract.ContractIdt.Client.ClientInfo.RegNumberDetails, 0)))
+                .ForPath(dest =>
+                    dest.User.IssueDate,
+                    opt => opt.MapFrom(src => GetIssueData(src.MsgData.Information.DataRs.ContractRs.FirstOrDefault().RsContract.ContractIdt.Client.ClientInfo.RegNumberDetails, 1)))
+                .ForPath(dest =>                                                      
+                    dest.User.ExpiryDate,                                             
+                    opt => opt.MapFrom(src => GetIssueData(src.MsgData.Information.DataRs.ContractRs.FirstOrDefault().RsContract.ContractIdt.Client.ClientInfo.RegNumberDetails, 2)))
+                .ForPath(dest =>
                     dest.Wallet.Balance,
-                    opt => opt.MapFrom(src => src.MsgData.Information.DataRs.ContractRs.FirstOrDefault().RsInfo.Balances.Balance.Find(f => f.Type == "AVAILABLE").Amount.Replace(".", "")));
+                    opt => opt.MapFrom(src => src.MsgData.Information.DataRs.ContractRs.FirstOrDefault().RsInfo.Balances.Balance.Find(f => f.Type == "AVAILABLE").Amount.Replace(".", "")))
+                .ForPath(dest =>
+                    dest.Wallet.Pan,
+                    opt => opt.MapFrom(src => src.MsgData.Information.DataRs.ContractRs.FirstOrDefault().RsContract.ContractIdt.ContractNumber))
+                .ForPath(dest =>
+                    dest.Wallet.CardId,
+                    opt => opt.MapFrom(src => FormatResponseToCardId(src.MsgData.Information.DataRs.ContractRs.FirstOrDefault().RsContract.AddContractInfo.AddInfo02, "CardId=")))
+                .ForPath(dest =>
+                    dest.Wallet.IssContractId,
+                    opt => opt.MapFrom(src => FormatResponseToCardId(src.MsgData.Information.DataRs.ContractRs.FirstOrDefault().RsContract.AddContractInfo.AddInfo02, "IssConractId=")));
+        }
+
+        private string FormatResponseToCardId(string text, string keyword)
+        {
+            if (text == null) return null;
+            var result = text.Substring(text.IndexOf(keyword) + keyword.Length, 9);
+            return result;
+        }
+
+        private string GetIssueData(string text, int index)
+        {
+            return text.Split(";")[index];
         }
     }
 }

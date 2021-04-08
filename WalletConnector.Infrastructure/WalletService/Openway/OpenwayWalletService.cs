@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
+using WalletConnector.Application.Common.Exceptions;
 using WalletConnector.Application.Infrastructure.Services.WalletService;
 using WalletConnector.Serializer;
 using WalletConnector.Serializer.Models.Application;
@@ -37,16 +38,18 @@ namespace WalletConnector.Infrastructure.WalletService.Openway
                 .AddPhoneNumber(phone);
 
             var xmlMessage = request.ToXElement().ToString();
-
             var response = await _sendWalletRequest(url: _config.Url, xmlMessage: xmlMessage);
-
             var result = response.FromXElement<InformationRequest>();
 
             AccountInfoResponseDto account = _mapper.Map<AccountInfoResponseDto>(result);
 
+            if (account.Status != 0) 
+            {
+                throw new NotFoundException();
+            }
+
             return account;
         }
-
 
         public async Task<int> CreateAccount(string phone, string description, CancellationToken cancellationToken)
         {

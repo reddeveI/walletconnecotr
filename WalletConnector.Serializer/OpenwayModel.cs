@@ -217,6 +217,9 @@ namespace WalletConnector.Serializer
 
         public class AddContractInfo
         {
+            [XmlElement("ExtraRs")]
+            public string ExtraRs { get; set; }
+
             [XmlElement("AddInfo02")]
             public string AddInfo02 { get; set; }
         }
@@ -320,6 +323,9 @@ namespace WalletConnector.Serializer
 
             [XmlElement("Product")]
             public Product Product { get; set; }
+
+            [XmlElement("AddContractInfo")]
+            public AddContractInfo AddContractInfo { get; set; }
         }
 
         public class RsInfo
