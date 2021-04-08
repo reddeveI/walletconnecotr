@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Xml.Serialization;
-using WalletConnector.Serializer.Helpers;
 using static WalletConnector.Serializer.OpenwayModel;
 
 namespace WalletConnector.Serializer.Models.Application
@@ -46,8 +44,8 @@ namespace WalletConnector.Serializer.Models.Application
             {
                 Parm = new List<Parm>()
                 {
-                    new Parm { ParmCode = "AcceptRq", Value = "Y" },
-                    new Parm { ParmCode = "Response", Value = "Y" },
+                    new() { ParmCode = "AcceptRq", Value = "Y" },
+                    new() { ParmCode = "Response", Value = "Y" },
                 },
             };
             return data;
@@ -79,7 +77,7 @@ namespace WalletConnector.Serializer.Models.Application
                     ClientInfo = new ClientInfoFull
                     {
                         ClientNumber = phone,
-                        RegNumber = RandomStringCreator.RandomString(16).ToUpper(),
+                        RegNumber = Guid.NewGuid().ToString("N").Substring(0, 16).ToUpperInvariant(),
                         ShortName = phone
                     }
                 }
@@ -104,7 +102,7 @@ namespace WalletConnector.Serializer.Models.Application
                             {
                                 CbsNumber = phone
                             },
-                            ContractName = "RGC" + RandomStringCreator.RandomString(10).ToUpper(),
+                            ContractName = "RGC" + Guid.NewGuid().ToString("N").Substring(0, 16).ToUpperInvariant(),
                             Product = new Product
                             {
                                 ProductCode = "999-PCW"
