@@ -11,7 +11,7 @@ namespace WalletConnector.Serializer
         public string Scheme { get; set; }
 
         [XmlAttribute(AttributeName = "msg_type")]
-        public string MsgType { get; set; }
+        public virtual string MsgType { get; set; }
 
         /// <remarks/>
         [XmlAttribute(AttributeName = "direction")]

@@ -10,35 +10,13 @@ namespace WalletConnector.Serializer.Models.Application
     [XmlRoot(ElementName = "UFXMsg")]
     public class ApplicationRequest : OpenwayModel
     {
+        public override string MsgType => "Application";
     }
 
     public static class ApplicationBuilder
     {
-        public static ApplicationRequest CreateDefaultApplication()
-        {
-            var data = new ApplicationRequest();
-            data.Scheme = "WAY4Appl";
-            data.MsgType = "Application";
-            data.Direction = "Rq";
-            data.Version = "2.0";
-            data.MsgId = Guid.NewGuid();
-            data.Source = new SourceAttribute { App = "RSMFRONT" };
-            data.MsgData = new MsgDataType
-            {
-                Application = new ApplicationType
-                {
-                    RegNumber = Guid.NewGuid(),
-                    Institution = "9999",
-                    InstitutionIdType = "Branch",
-                    OrderDepartment = "9901",
-                    ObjectType = "Client",
-                    ActionType = "AddOrUpdate",
-                    ProductCategory = "Issuing"
-                }
-            };
-
-            return data;
-        }
+        public static ApplicationRequest CreateDefaultApplication() => 
+            CommonRequestBuilder.Create<ApplicationRequest>(MsgType.Application);
 
         public static ApplicationRequest AddResultDetails(this ApplicationRequest data)
         {
@@ -46,8 +24,8 @@ namespace WalletConnector.Serializer.Models.Application
             {
                 Parm = new List<Parm>()
                 {
-                    new Parm { ParmCode = "AcceptRq", Value = "Y" },
-                    new Parm { ParmCode = "Response", Value = "Y" },
+                    new() { ParmCode = "AcceptRq", Value = "Y" },
+                    new() { ParmCode = "Response", Value = "Y" },
                 },
             };
             return data;
@@ -79,7 +57,7 @@ namespace WalletConnector.Serializer.Models.Application
                     ClientInfo = new ClientInfoFull
                     {
                         ClientNumber = phone,
-                        RegNumber = RandomStringCreator.RandomString(16).ToUpper(),
+                        RegNumber = Guid.NewGuid().ToString("N").Substring(0, 16).ToUpperInvariant(),
                         ShortName = phone
                     }
                 }

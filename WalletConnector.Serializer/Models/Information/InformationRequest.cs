@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Xml.Serialization;
 using static WalletConnector.Serializer.OpenwayModel;
 
@@ -10,31 +8,15 @@ namespace WalletConnector.Serializer.Models.Information
     public class InformationRequest : OpenwayModel
     {
         public string Test { get; set; }
+
+        public override string MsgType => "Information";
+
     }
 
     public static class InformationBuilder
     {
-        public static InformationRequest CreateDefaultInformation()
-        {
-            var data = new InformationRequest();
-            data.Scheme = "WAY4Appl";
-            data.MsgType = "Information";
-            data.Direction = "Rq";
-            data.Version = "2.0";
-            data.MsgId = Guid.NewGuid();
-            data.Source = new SourceAttribute { App = "RSMFRONT" };
-            data.MsgData = new MsgDataType
-            {
-                Information = new InformationType
-                {
-                    RegNumber = Guid.NewGuid(),
-                    ObjectType = "Contract",
-                    ActionType = "Inquiry"
-                }
-            };
-
-            return data;
-        }
+        public static InformationRequest CreateDefaultInformation() =>
+            CommonRequestBuilder.Create<InformationRequest>(MsgType.Information);
 
         public static InformationRequest AddResultDetails(this InformationRequest data)
         {

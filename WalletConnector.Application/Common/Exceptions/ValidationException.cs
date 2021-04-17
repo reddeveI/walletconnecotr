@@ -23,5 +23,20 @@ namespace WalletConnector.Application.Common.Exceptions
         }
 
         public IDictionary<string, string[]> Errors { get; }
+        
+        public override string ToString()
+        {
+            var builder = new StringBuilder();
+            foreach (var (key, errors) in Errors)
+            {
+                builder.AppendLine(key);
+                foreach (var s in errors)
+                {
+                    builder.Append("    ").AppendLine(s);
+                }
+            }
+
+            return builder.ToString();
+        }
     }
 }
