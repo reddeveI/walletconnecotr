@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Xml.Serialization;
-using WalletConnector.Serializer.Helpers;
 using static WalletConnector.Serializer.OpenwayModel;
 
 namespace WalletConnector.Serializer.Models.Application
@@ -82,7 +80,7 @@ namespace WalletConnector.Serializer.Models.Application
                             {
                                 CbsNumber = phone
                             },
-                            ContractName = "RGC" + RandomStringCreator.RandomString(10).ToUpper(),
+                            ContractName = "RGC" + Guid.NewGuid().ToString("N").Substring(0, 16).ToUpperInvariant(),
                             Product = new Product
                             {
                                 ProductCode = "999-PCW"

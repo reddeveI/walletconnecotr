@@ -24,12 +24,12 @@ namespace WalletConnector.Serializer.Models.Information
             {
                 Parm = new List<Parm>()
                 {
-                    new Parm { ParmCode = "Status", Value = "Y" },
-                    new Parm { ParmCode = "Client", Value = "Y" },
-                    new Parm { ParmCode = "Balance", Value = "WALLET" },
-                    new Parm { ParmCode = "Product", Value = "Y" },
-                    new Parm { ParmCode = "ContractClassifier", Value = "Y" },
-                    new Parm { ParmCode = "ExtraRs", Value = "USAGE_REMAIN;BALANCE_SECTIONS;" }
+                    new() { ParmCode = "Status", Value = "Y" },
+                    new() { ParmCode = "Client", Value = "Y" },
+                    new() { ParmCode = "Balance", Value = "WALLET" },
+                    new() { ParmCode = "Product", Value = "Y" },
+                    new() { ParmCode = "ContractClassifier", Value = "Y" },
+                    new() { ParmCode = "ExtraRs", Value = "USAGE_REMAIN;BALANCE_SECTIONS;" }
                 },
             };
             data.MsgData.Information.ResultDtls.Filter = new Filter

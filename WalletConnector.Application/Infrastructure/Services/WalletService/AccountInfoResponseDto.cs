@@ -9,6 +9,8 @@ namespace WalletConnector.Application.Infrastructure.Services.WalletService
         public Wallet Wallet { get; set; }
 
         public User User { get; set; }
+
+        public int Status { get; set; }
     }
 
     public class User
@@ -33,5 +35,8 @@ namespace WalletConnector.Application.Infrastructure.Services.WalletService
     public class Wallet
     {
         public string Balance { get; set; }
+        public string Pan { get; set; }
+        public string CardId { get; set; }
+        public string IssContractId { get; set; }
     }
 }
