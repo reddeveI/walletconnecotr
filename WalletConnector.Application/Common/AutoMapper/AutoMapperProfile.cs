@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using System.Linq;
+using WalletConnector.Application.Accounts.Commands.CreateAccount;
 using WalletConnector.Application.Accounts.Queries.GetAccountInfo;
 using WalletConnector.Application.Infrastructure.Services.WalletService;
+using WalletConnector.Serializer.Models.Application;
 using WalletConnector.Serializer.Models.Information;
 using static WalletConnector.Application.Accounts.Queries.GetAccountInfo.AccountInfoVm;
 
@@ -45,6 +47,13 @@ namespace WalletConnector.Application.Common.AutoMapper
                             }
                         }));
 
+            CreateMap<ApplicationRequest, AccountCreatedVm>()
+                .ForPath(dest =>
+                    dest.Phone,
+                    opt => opt.MapFrom(src => src.MsgData.Application.SubApplList.SubApplication.DataRs.ContractRs.FirstOrDefault().RsContract.ContractIdt.CbsNumber))
+                .ForPath(dest =>
+                    dest.Currency,
+                    opt => opt.MapFrom(src => src.MsgData.Application.SubApplList.SubApplication.DataRs.ContractRs.FirstOrDefault().RsContract.Currency));
 
             CreateMap<InformationRequest, AccountInfoResponseDto>()
                  .ForPath(dest =>

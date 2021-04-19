@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
+using WalletConnector.Application.Accounts.Commands.CreateAccount;
 using WalletConnector.Application.Common.Exceptions;
 using WalletConnector.Application.Infrastructure.Services.WalletService;
 using WalletConnector.Serializer;
@@ -51,7 +52,7 @@ namespace WalletConnector.Infrastructure.WalletService.Openway
             return account;
         }
 
-        public async Task<int> CreateAccount(string phone, string description, CancellationToken cancellationToken)
+        public async Task<AccountCreatedVm> CreateAccount(string phone, string description, CancellationToken cancellationToken)
         {
             var request = ApplicationBuilder
                 .CreateDefaultApplication()
@@ -66,7 +67,9 @@ namespace WalletConnector.Infrastructure.WalletService.Openway
 
             var result = response.FromXElement<ApplicationRequest>();
 
-            return 1;
+            AccountCreatedVm accountCreated = _mapper.Map<AccountCreatedVm>(result);
+
+            return accountCreated;
         }
 
         private async Task<string> _sendWalletRequest(string url, string xmlMessage)
