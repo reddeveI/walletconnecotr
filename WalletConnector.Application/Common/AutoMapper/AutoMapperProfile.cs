@@ -121,6 +121,10 @@ namespace WalletConnector.Application.Common.AutoMapper
 
         private string GetIssueData(string text, int index)
         {
+            if (text == null)
+            {
+                return null;
+            }
             return text.Split(";")[index];
         }
     }
