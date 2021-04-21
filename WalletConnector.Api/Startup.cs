@@ -33,8 +33,7 @@ namespace WalletConnector.Api
                     options.JsonSerializerOptions.PropertyNamingPolicy = new SnakeCaseJsonNamingPolicy();
                 });
             services.AddApplication();
-            services.AddInfrastructure();
-            services.AddWalletService(Configuration);
+            services.AddInfrastructure(x => Configuration.Bind("WalletService", x));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -60,13 +59,4 @@ namespace WalletConnector.Api
         
     }
 
-    internal static class CustomExtensionsMethods
-    {
-        public static IServiceCollection AddWalletService(this IServiceCollection services, IConfiguration configuration)
-        {
-            services.Configure<WalletServiceConfig>(configuration.GetSection("WalletService"));
-            services.AddScoped<IWalletService, OpenwayWalletService>();
-            return services;
-        }
-    }
 }
