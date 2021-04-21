@@ -9,10 +9,7 @@ using WalletConnector.Application.Infrastructure.Services.WalletService;
 
 namespace WalletConnector.Application.Accounts.Queries.GetAccountInfo
 {
-    public class GetAccountInfoQuery : IRequest<AccountInfoVm>
-    {
-        public string Phone { get; set; }
-    }
+    public record GetAccountInfoQuery(string Phone) : IRequest<AccountInfoVm>;
 
     public class GetAccountInfoQueryHandler : IRequestHandler<GetAccountInfoQuery, AccountInfoVm>
     {
@@ -29,9 +26,7 @@ namespace WalletConnector.Application.Accounts.Queries.GetAccountInfo
         {
             var getInfoRequest = await _walletService.GetAccountInfo(request.Phone);
 
-            //var response = _mapper.Map<AccountInfoVm>(getInfoRequest);
-
-            return new AccountInfoVm();
+            return _mapper.Map<AccountInfoVm>(getInfoRequest);
         }
     }
 }

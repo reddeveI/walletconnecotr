@@ -4,7 +4,7 @@ using System.Xml;
 using System.Xml.Linq;
 using System.Xml.Serialization;
 
-namespace WalletConnector.Infrastructure
+namespace WalletConnector.Serializer
 {
     public static class XElementExtensions
     {

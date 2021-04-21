@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using AutoMapper;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -25,13 +26,10 @@ namespace WalletConnector.Api.Controllers
             return await _mediator.Send(query);
         }
 
-
         [HttpPost, Route("wallet/user/new")]
-        public async Task<int> CreateAccount([FromBody] CreateAccountCommand command)
+        public async Task<AccountCreatedVm> CreateAccount([FromBody] CreateAccountCommand command)
         {
             return await _mediator.Send(command);
         }
-
-
     }
 }

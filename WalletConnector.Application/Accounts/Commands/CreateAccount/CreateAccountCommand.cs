@@ -9,14 +9,9 @@ using WalletConnector.Application.Infrastructure.Services.WalletService;
 
 namespace WalletConnector.Application.Accounts.Commands.CreateAccount
 {
-    public class CreateAccountCommand : IRequest<int>
-    {
-        public string Phone { get; set; }
+    public record CreateAccountCommand(string Phone, string Description) : IRequest<AccountCreatedVm>;
 
-        public string Description { get; set; }
-    }
-
-    public class CreateAccountCommandHandler : IRequestHandler<CreateAccountCommand, int>
+    public class CreateAccountCommandHandler : IRequestHandler<CreateAccountCommand, AccountCreatedVm>
     {
         private readonly IWalletService _walletService;
         private readonly IMapper _mapper;
@@ -27,7 +22,7 @@ namespace WalletConnector.Application.Accounts.Commands.CreateAccount
             _mapper = mapper;
         }
 
-        public Task<int> Handle(CreateAccountCommand request, CancellationToken cancellationToken)
+        public Task<AccountCreatedVm> Handle(CreateAccountCommand request, CancellationToken cancellationToken)
         {
             var createAccountRequest = _walletService.CreateAccount(request.Phone, request.Description, cancellationToken);
 

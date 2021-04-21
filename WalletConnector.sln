@@ -3,13 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31129.286
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WalletConnector.Api", "WalletConnector.Api\WalletConnector.Api.csproj", "{0BF002FF-0298-4293-B002-EE7B3B98AA9C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WalletConnector.Api", "WalletConnector.Api\WalletConnector.Api.csproj", "{0BF002FF-0298-4293-B002-EE7B3B98AA9C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WalletConnector.Application", "WalletConnector.Application\WalletConnector.Application.csproj", "{96EF3F8F-0A4C-4C86-A23A-946ECD700664}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WalletConnector.Application", "WalletConnector.Application\WalletConnector.Application.csproj", "{96EF3F8F-0A4C-4C86-A23A-946ECD700664}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WalletConnector.Domain", "WalletConnector.Domain\WalletConnector.Domain.csproj", "{C4652956-9A10-4BD0-BB39-28442B2DA69D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WalletConnector.Domain", "WalletConnector.Domain\WalletConnector.Domain.csproj", "{C4652956-9A10-4BD0-BB39-28442B2DA69D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WalletConnector.Infrastructure", "WalletConnector.Infrastructure\WalletConnector.Infrastructure.csproj", "{46DE5F50-D350-4BC3-8730-54C1BA9E7D75}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WalletConnector.Infrastructure", "WalletConnector.Infrastructure\WalletConnector.Infrastructure.csproj", "{46DE5F50-D350-4BC3-8730-54C1BA9E7D75}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WalletConnector.Serializer", "WalletConnector.Serializer\WalletConnector.Serializer.csproj", "{D3D1D53B-9401-42E7-B199-9F26EAE1FB9C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WalletConnector.Serializer.Tests", "WalletConnector.Serializer.Tests\WalletConnector.Serializer.Tests.csproj", "{B9538639-AF51-433C-A89D-14E969AE28B6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +37,14 @@ Global
 		{46DE5F50-D350-4BC3-8730-54C1BA9E7D75}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{46DE5F50-D350-4BC3-8730-54C1BA9E7D75}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{46DE5F50-D350-4BC3-8730-54C1BA9E7D75}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D3D1D53B-9401-42E7-B199-9F26EAE1FB9C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D3D1D53B-9401-42E7-B199-9F26EAE1FB9C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D3D1D53B-9401-42E7-B199-9F26EAE1FB9C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D3D1D53B-9401-42E7-B199-9F26EAE1FB9C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B9538639-AF51-433C-A89D-14E969AE28B6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B9538639-AF51-433C-A89D-14E969AE28B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B9538639-AF51-433C-A89D-14E969AE28B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B9538639-AF51-433C-A89D-14E969AE28B6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

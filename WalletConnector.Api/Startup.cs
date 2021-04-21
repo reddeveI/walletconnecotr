@@ -1,19 +1,17 @@
+using System;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using WalletConnector.Api.Helpers;
 using WalletConnector.Application;
-using WalletConnector.Application.Infrastructure.Services.WalletService;
-using WalletConnector.Infrastructure.WalletService;
-using WalletConnector.Infrastructure.WalletService.Openway;
+using WalletConnector.Application.Common.Exceptions;
+using WalletConnector.Infrastructure;
 
 namespace WalletConnector.Api
 {
@@ -29,9 +27,17 @@ namespace WalletConnector.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services.AddScoped<ExceptionHandlerHelper>();
+            services.AddControllers()
+                .AddJsonOptions(options =>
+                {
+                    options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
+                    options.JsonSerializerOptions.PropertyNamingPolicy = new SnakeCaseJsonNamingPolicy();
+                });
             services.AddApplication();
-            services.AddWalletService(Configuration);
+            services.AddInfrastructure(x => Configuration.Bind("WalletService", x));
+
+            services.AddSwaggerGen();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -40,9 +46,32 @@ namespace WalletConnector.Api
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+
+                app.UseSwagger();
+
+                // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.),
+                // specifying the Swagger JSON endpoint.
+                app.UseSwaggerUI(c =>
+                {
+                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+                });
             }
 
+            app.UseExceptionHandler(c => c.Run(async context =>
+            {
+                var logger = context.RequestServices.GetRequiredService<ILogger<ExceptionHandlerHelper>>();
+                
+                await context.Response.WriteAsJsonAsync(
+                    new 
+                    {
+                        error = context.RequestServices.GetRequiredService<ExceptionHandlerHelper>()
+                                    .Do(context, context.Features.Get<IExceptionHandlerPathFeature>().Error, logger)
+                    });
+            }));
+            
             app.UseHttpsRedirection();
+
+            
 
             app.UseRouting();
 
@@ -57,13 +86,4 @@ namespace WalletConnector.Api
         
     }
 
-    internal static class CustomExtensionsMethods
-    {
-        public static IServiceCollection AddWalletService(this IServiceCollection services, IConfiguration configuration)
-        {
-            services.Configure<WalletServiceConfig>(configuration.GetSection("WalletService"));
-            services.AddScoped<IWalletService, OpenwayWalletService>();
-            return services;
-        }
-    }
 }
