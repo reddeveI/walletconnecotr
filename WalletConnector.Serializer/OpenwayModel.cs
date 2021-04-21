@@ -11,7 +11,7 @@ namespace WalletConnector.Serializer
         public string Scheme { get; set; }
 
         [XmlAttribute(AttributeName = "msg_type")]
-        public string MsgType { get; set; }
+        public virtual string MsgType { get; set; }
 
         /// <remarks/>
         [XmlAttribute(AttributeName = "direction")]
@@ -226,6 +226,9 @@ namespace WalletConnector.Serializer
 
         public class ClientInfo
         {
+            [XmlElement("ClientNumber")]
+            public string ClientNumber { get; set; }
+
             [XmlElement("RegNumberType")]
             public string RegNumberType { get; set; }
 
@@ -234,9 +237,6 @@ namespace WalletConnector.Serializer
 
             [XmlElement("RegNumberDetails")]
             public string RegNumberDetails { get; set; }
-
-            [XmlElement("ClientNumber")]
-            public string ClientNumber { get; set; }
 
             [XmlElement("ShortName")]
             public string ShortName { get; set; }
@@ -326,6 +326,9 @@ namespace WalletConnector.Serializer
 
             [XmlElement("AddContractInfo")]
             public AddContractInfo AddContractInfo { get; set; }
+
+            [XmlElement("Currency")]
+            public string Currency { get; set; }
         }
 
         public class RsInfo

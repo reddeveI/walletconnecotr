@@ -1,15 +1,17 @@
+using System;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using WalletConnector.Api.Helpers;
 using WalletConnector.Application;
-using WalletConnector.Application.Filters;
-using WalletConnector.Application.Infrastructure.Services.WalletService;
+using WalletConnector.Application.Common.Exceptions;
 using WalletConnector.Infrastructure;
-using WalletConnector.Infrastructure.WalletService;
-using WalletConnector.Infrastructure.WalletService.Openway;
 
 namespace WalletConnector.Api
 {
@@ -25,8 +27,8 @@ namespace WalletConnector.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers(options =>
-                options.Filters.Add<ApiExceptionFilterAttribute>())
+            services.AddScoped<ExceptionHandlerHelper>();
+            services.AddControllers()
                 .AddJsonOptions(options =>
                 {
                     options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
@@ -44,6 +46,18 @@ namespace WalletConnector.Api
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseExceptionHandler(c => c.Run(async context =>
+            {
+                var logger = context.RequestServices.GetRequiredService<ILogger<ExceptionHandlerHelper>>();
+                
+                await context.Response.WriteAsJsonAsync(
+                    new 
+                    {
+                        error = context.RequestServices.GetRequiredService<ExceptionHandlerHelper>()
+                                    .Do(context, context.Features.Get<IExceptionHandlerPathFeature>().Error, logger)
+                    });
+            }));
+            
             app.UseHttpsRedirection();
 
             app.UseRouting();

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using WalletConnector.Application.Accounts.Commands.CreateAccount;
 
 namespace WalletConnector.Application.Infrastructure.Services.WalletService
 {
@@ -10,6 +11,6 @@ namespace WalletConnector.Application.Infrastructure.Services.WalletService
     {
         Task<AccountInfoResponseDto> GetAccountInfo(string phone);
 
-        Task<int> CreateAccount(string phone, string description, CancellationToken cancellationToken);
+        Task<AccountCreatedVm> CreateAccount(string phone, string description, CancellationToken cancellationToken);
     }
 }

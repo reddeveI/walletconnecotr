@@ -3,6 +3,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using WalletConnector.Application.Common.Exceptions;
 
 namespace WalletConnector.Application.Common.Behaviours
 {
@@ -21,7 +22,7 @@ namespace WalletConnector.Application.Common.Behaviours
             {
                 return await next();
             }
-            catch (Exception ex)
+            catch (Exception ex) when (ex is not ValidationException && ex is not NotFoundException)
             {
                 var requestName = typeof(TRequest).Name;
 
