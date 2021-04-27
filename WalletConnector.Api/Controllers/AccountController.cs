@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -7,6 +8,7 @@ using System.Threading.Tasks;
 using WalletConnector.Application.Accounts.Commands.CreateAccount;
 using WalletConnector.Application.Accounts.Commands.HoldAccount;
 using WalletConnector.Application.Accounts.Commands.UnholdAccount;
+using WalletConnector.Application.Accounts.Queries.CheckForPayment;
 using WalletConnector.Application.Accounts.Queries.GetAccountInfo;
 
 namespace WalletConnector.Api.Controllers
@@ -29,9 +31,18 @@ namespace WalletConnector.Api.Controllers
         }
 
         [HttpPost, Route("wallet/user/new")]
-        public async Task<AccountCreatedVm> CreateAccount([FromBody] CreateAccountCommand command)
+        [ProducesResponseType(typeof(AccountCreatedVm), StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> CreateAccount([FromBody] CreateAccountCommand command)
         {
-            return await _mediator.Send(command);
+            var result = await _mediator.Send(command);
+            return Created("common/user/find", result);
+        }
+
+        [HttpPost, Route("paynet/service/check")]
+        public async Task<PaymentCheckVm> CheckForPaymentAvalibility([FromBody] CheckForPaymentQuery query)
+        {
+            return await _mediator.Send(query);
         }
 
         [HttpPost, Route("withdrawal/hold")]

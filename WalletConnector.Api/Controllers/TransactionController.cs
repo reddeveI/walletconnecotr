@@ -29,6 +29,9 @@ namespace WalletConnector.Api.Controllers
         [HttpPost, Route("external/transfer")]
         public async Task<TransactionCreatedVm> CreateExternalTransaction([FromBody] CreateExternalTransactionCommand command)
         {
+            HttpContext.Request.Headers.TryGetValue("Authorization", out var token);
+            command = command with { Token = token.ToString() };
+
             return await _mediator.Send(command);
         }
 

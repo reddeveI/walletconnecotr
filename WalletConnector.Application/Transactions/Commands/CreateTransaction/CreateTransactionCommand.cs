@@ -8,7 +8,10 @@ using WalletConnector.Application.Infrastructure.Services.WalletService;
 
 namespace WalletConnector.Application.Transactions.Commands.CreateTransaction
 {
-    public record CreateTransactionCommand(string From, string To, decimal Amount, string Currency) : IRequest<TransactionCreatedVm>;
+    public record CreateTransactionCommand(string From, string To, decimal Amount, string Currency, 
+        string MessageCode = "account_transfer", 
+        string TransactionType = "W2W") : IRequest<TransactionCreatedVm> { }
+    
 
     public class CreateTransactionCommandHandler : IRequestHandler<CreateTransactionCommand, TransactionCreatedVm>
     {
@@ -23,10 +26,8 @@ namespace WalletConnector.Application.Transactions.Commands.CreateTransaction
 
         public async Task<TransactionCreatedVm> Handle(CreateTransactionCommand request, CancellationToken cancellationToken)
         {
-            var messageCode = "account_transfer";
-            var transactionType = "W2W";
-
-            var createTransactionRequest = await _walletService.CreateTransaction(request.From, request.To, request.Amount, request.Currency, messageCode, transactionType, cancellationToken, transactionId: null);
+            var createTransactionRequest = await _walletService.CreateTransaction(request.From, request.To, request.Amount, request.Currency, 
+                request.MessageCode, request.TransactionType, cancellationToken, transactionId: null);
 
             if (createTransactionRequest.Status != 0)
             {

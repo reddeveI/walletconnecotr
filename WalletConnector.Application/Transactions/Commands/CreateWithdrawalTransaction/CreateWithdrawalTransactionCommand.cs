@@ -8,7 +8,15 @@ using WalletConnector.Application.Infrastructure.Services.WalletService;
 
 namespace WalletConnector.Application.Transactions.Commands.CreateWithdrawalTransaction
 {
-    public record CreateWithdrawalTransactionCommand(string Phone, decimal Amount, decimal Commission, string Description, string CustomerReference) : IRequest<WithdrawalCreatedVm>;
+    public record CreateWithdrawalTransactionCommand(
+        string Phone, 
+        decimal Amount, 
+        decimal Commission, 
+        string Description, 
+        string CustomerReference,
+        string MessageCode = "OrdReq",
+        string TransactionType = "CHTR",
+        string Currency = "KZT") : IRequest<WithdrawalCreatedVm>;
 
     public class CreateWithdrawalTransactionCommandHandler : IRequestHandler<CreateWithdrawalTransactionCommand, WithdrawalCreatedVm>
     {
@@ -23,12 +31,9 @@ namespace WalletConnector.Application.Transactions.Commands.CreateWithdrawalTran
 
         public async Task<WithdrawalCreatedVm> Handle(CreateWithdrawalTransactionCommand request, CancellationToken cancellationToken)
         {
-            var messageCode = "OrdReq";
-            var transactionType = "CHTR";
-
             var createWithdrawalRequest = await _walletService.CreateWithdrawal(request.Phone, 
                 request.CustomerReference, request.Description, request.Amount, request.Commission, 
-                "KZT", messageCode, transactionType, cancellationToken);
+                request.Currency, request.MessageCode, request.TransactionType, cancellationToken);
 
             if (createWithdrawalRequest.Status != 0)
             {

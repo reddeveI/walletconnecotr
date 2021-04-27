@@ -1,16 +1,14 @@
-using System;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using WalletConnector.Api.Helpers;
 using WalletConnector.Application;
-using WalletConnector.Application.Common.Exceptions;
+using WalletConnector.Application.DependencyInjection;
 using WalletConnector.Infrastructure;
 
 namespace WalletConnector.Api
@@ -34,7 +32,7 @@ namespace WalletConnector.Api
                     options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
                     options.JsonSerializerOptions.PropertyNamingPolicy = new SnakeCaseJsonNamingPolicy();
                 });
-            services.AddApplication();
+            services.AddApplication(x => Configuration.Bind("ClientKeys", x));
             services.AddInfrastructure(x => Configuration.Bind("WalletService", x));
 
             services.AddSwaggerGen();

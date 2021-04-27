@@ -3,6 +3,7 @@ using System.Linq;
 using WalletConnector.Application.Accounts.Commands.CreateAccount;
 using WalletConnector.Application.Accounts.Commands.HoldAccount;
 using WalletConnector.Application.Accounts.Commands.UnholdAccount;
+using WalletConnector.Application.Accounts.Queries.CheckForPayment;
 using WalletConnector.Application.Accounts.Queries.GetAccountInfo;
 using WalletConnector.Application.Infrastructure.Services.WalletService;
 using WalletConnector.Application.Transactions.Commands.CreateTransaction;
@@ -59,6 +60,11 @@ namespace WalletConnector.Application.Common.AutoMapper
                 .ForPath(dest =>
                     dest.Currency,
                     opt => opt.MapFrom(src => src.MsgData.Application.SubApplList.SubApplication.DataRs.ContractRs.FirstOrDefault().RsContract.Currency));
+
+            CreateMap<ApplicationRequest, PaymentCheckVm>()
+                .ForPath(dest =>
+                    dest.Status,
+                    opt => opt.MapFrom(src => src.MsgData.Information.Status.RespCode));
 
             CreateMap<DocumentRequest, TransactionCreatedVm>()
                 .ForPath(dest =>
