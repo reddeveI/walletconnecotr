@@ -509,7 +509,7 @@ namespace WalletConnector.Serializer
             public string Currency { get; set; }
 
             [XmlElement("Amount")]
-            public string Amount { get; set; }
+            public decimal Amount { get; set; }
 
             [XmlElement("Extra")]
             public Extra Extra { get; set; }

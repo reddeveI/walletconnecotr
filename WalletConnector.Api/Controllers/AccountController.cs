@@ -5,6 +5,8 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Threading.Tasks;
 using WalletConnector.Application.Accounts.Commands.CreateAccount;
+using WalletConnector.Application.Accounts.Commands.HoldAccount;
+using WalletConnector.Application.Accounts.Commands.UnholdAccount;
 using WalletConnector.Application.Accounts.Queries.GetAccountInfo;
 
 namespace WalletConnector.Api.Controllers
@@ -28,6 +30,18 @@ namespace WalletConnector.Api.Controllers
 
         [HttpPost, Route("wallet/user/new")]
         public async Task<AccountCreatedVm> CreateAccount([FromBody] CreateAccountCommand command)
+        {
+            return await _mediator.Send(command);
+        }
+
+        [HttpPost, Route("withdrawal/hold")]
+        public async Task<AccountHoldedVm> HoldAccount([FromBody] HoldAccountCommand command)
+        {
+            return await _mediator.Send(command);
+        }
+
+        [HttpPost, Route("withdrawal/unhold")]
+        public async Task<AccountUnholdedVm> UnholdAccount([FromBody] UnholdAccountCommand command)
         {
             return await _mediator.Send(command);
         }

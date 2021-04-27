@@ -1,0 +1,35 @@
+﻿<UFXMsg xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" scheme="WAY4Appl" direction="Rq" version="2.0" msg_type="Doc">
+  <MsgId>fae0b7d2-43c8-495e-84f0-889e062fc24a</MsgId>
+  <Source app="RSMFRONT"/>
+  <MsgData>
+    <Doc>
+      <TransType>
+        <TransCode>
+          <MsgCode>OrdReq</MsgCode>
+          <ServiceCode>CHTR</ServiceCode>
+        </TransCode>
+      </TransType>
+      <DocRefSet>
+        <Parm>
+          <ParmCode>SRN</ParmCode>
+          <Value>111007429429</Value>
+        </Parm>
+      </DocRefSet>
+      <Description>Test</Description>
+      <Requestor>
+        <CBSNumber>77717545421</CBSNumber>
+      </Requestor>
+      <Source>
+        <CBSNumber>77717545421</CBSNumber>
+      </Source>
+      <Transaction>
+        <Currency>KZT</Currency>
+        <Amount>10</Amount>
+        <Extra>
+          <Type>CustomData</Type>
+          <Details>F00AC106T35000</Details>
+        </Extra>
+      </Transaction>
+    </Doc>
+  </MsgData>
+</UFXMsg>

@@ -7,9 +7,12 @@ using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using WalletConnector.Application.Accounts.Commands.CreateAccount;
+using WalletConnector.Application.Accounts.Commands.HoldAccount;
+using WalletConnector.Application.Accounts.Commands.UnholdAccount;
 using WalletConnector.Application.Common.Exceptions;
 using WalletConnector.Application.Infrastructure.Services.WalletService;
 using WalletConnector.Application.Transactions.Commands.CreateTransaction;
+using WalletConnector.Application.Transactions.Commands.CreateWithdrawalTransaction;
 using WalletConnector.Serializer;
 using WalletConnector.Serializer.Models.Application;
 using WalletConnector.Serializer.Models.Document;
@@ -75,12 +78,15 @@ namespace WalletConnector.Infrastructure.WalletService.Openway
         }
 
 
-        public async Task<TransactionCreatedVm> CreateTransaction(string from, string to, string amount, string currency, CancellationToken cancellationToken)
+        public async Task<TransactionCreatedVm> CreateTransaction(string from, string to, decimal amount, string currency, string messageCode, string transactionType, CancellationToken cancellationToken, string transactionId = null)
         {
             var request = DocumentBuilder
                 .CreateDefaultDocument()
-                .AddTransactionType()
-                .AddTransactionInfo(from, to)
+                .AddTransactionType(messageCode, transactionType)
+                .AddTransactionId(transactionId)
+                .AddTransactionDescription($"Перевод со счёта {from} на счёт {to}")
+                .AddTransactionRequestorInfo(from)
+                .AddTransactionDestinationInfo(to)
                 .AddTransactionAmount(currency, amount);
 
             var xmlMessage = request.ToXElement().ToString();
@@ -92,6 +98,72 @@ namespace WalletConnector.Infrastructure.WalletService.Openway
             TransactionCreatedVm transactionCreated = _mapper.Map<TransactionCreatedVm>(result);
 
             return transactionCreated;
+        }
+
+        public async Task<WithdrawalCreatedVm> CreateWithdrawal(string phone, string transactionId, string description, decimal amount, decimal commission, string currency, string messageCode, string transactionType, CancellationToken cancellationToken)
+        {
+            var request = DocumentBuilder
+                .CreateDefaultDocument()
+                .AddTransactionCode(messageCode, transactionType)
+                .AddTransactionId(transactionId)
+                .AddTransactionDescription(description)
+                .AddTransactionRequestorInfo(phone)
+                .AddTransactionSourceInfo(phone)
+                .AddTransactionAmount(currency, amount)
+                .AddExtraAmount(commission);
+
+
+            var xmlMessage = request.ToXElement().ToString();
+
+            var response = await _sendWalletRequest(url: _config.Url, xmlMessage: xmlMessage);
+
+            var result = response.FromXElement<DocumentRequest>();
+
+            WithdrawalCreatedVm withdrawalCreated = _mapper.Map<WithdrawalCreatedVm>(result);
+
+            return withdrawalCreated;
+        }
+
+
+        public async Task<AccountHoldedVm> HoldAccount(string phone, decimal amount, string currency, string messageCode, string transactionId, CancellationToken cancellationToken)
+        {
+            var request = DocumentBuilder
+                .CreateDefaultDocument()
+                .AddDocumentType(messageCode)
+                .AddTransactionId(transactionId)
+                .AddTransactionRequestorInfo(phone)
+                .AddTransactionSourceInfo(phone)
+                .AddTransactionAmount(currency, amount);
+
+            var xmlMessage = request.ToXElement().ToString();
+
+            var response = await _sendWalletRequest(url: _config.Url, xmlMessage: xmlMessage);
+
+            var result = response.FromXElement<DocumentRequest>();
+
+            AccountHoldedVm accountHolded = _mapper.Map<AccountHoldedVm>(result);
+
+            return accountHolded;
+        }
+
+        public async Task<AccountUnholdedVm> UnholdAccount(string phone, decimal amount, string currency, string messageCode, CancellationToken cancellationToken)
+        {
+            var request = DocumentBuilder
+                .CreateDefaultDocument()
+                .AddDocumentType(messageCode)
+                .AddTransactionRequestorInfo(phone)
+                .AddTransactionSourceInfo(phone)
+                .AddTransactionAmount(currency, amount);
+
+            var xmlMessage = request.ToXElement().ToString();
+
+            var response = await _sendWalletRequest(url: _config.Url, xmlMessage: xmlMessage);
+
+            var result = response.FromXElement<DocumentRequest>();
+
+            AccountUnholdedVm accountUnholded = _mapper.Map<AccountUnholdedVm>(result);
+
+            return accountUnholded;
         }
 
         private async Task<string> _sendWalletRequest(string url, string xmlMessage)

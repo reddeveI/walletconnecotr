@@ -1,0 +1,31 @@
+﻿<UFXMsg xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" scheme="WAY4Appl" msg_type="Doc" direction="Rq" version="2.0">
+  <MsgId>a65faa68-6d24-4a4d-8618-80852a7a086b</MsgId>
+  <Source app="RSMFRONT"/>
+  <MsgData>
+    <Doc>
+      <TransType>
+        <TransCode>
+          <MsgCode>account_transfer</MsgCode>
+          <TransTypeExtension>O2W</TransTypeExtension>
+        </TransCode>
+      </TransType>
+      <DocRefSet>
+        <Parm>
+          <ParmCode>SRN</ParmCode>
+          <Value>b2b-632144001</Value>
+        </Parm>
+      </DocRefSet>
+      <Description>Перевод со счёта RGC060440002605 на счёт 77026759185</Description>
+      <Requestor>
+        <CBSNumber>RGC060440002605</CBSNumber>
+      </Requestor>
+      <Destination>
+        <CBSNumber>77026759185</CBSNumber>
+      </Destination>
+      <Transaction>
+        <Currency>KZT</Currency>
+        <Amount>1000</Amount>
+      </Transaction>
+    </Doc>
+  </MsgData>
+</UFXMsg>

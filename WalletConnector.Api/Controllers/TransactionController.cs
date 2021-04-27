@@ -3,7 +3,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Threading.Tasks;
+using WalletConnector.Application.Transactions.Commands.CreateExternalTransaction;
 using WalletConnector.Application.Transactions.Commands.CreateTransaction;
+using WalletConnector.Application.Transactions.Commands.CreateWithdrawalTransaction;
 
 namespace WalletConnector.Api.Controllers
 {
@@ -20,6 +22,18 @@ namespace WalletConnector.Api.Controllers
 
         [HttpPost, Route("common/transfer")]
         public async Task<TransactionCreatedVm> CreateTransaction([FromBody] CreateTransactionCommand command)
+        {
+            return await _mediator.Send(command);
+        }
+
+        [HttpPost, Route("external/transfer")]
+        public async Task<TransactionCreatedVm> CreateExternalTransaction([FromBody] CreateExternalTransactionCommand command)
+        {
+            return await _mediator.Send(command);
+        }
+
+        [HttpPost, Route("withdrawal/confirm")]
+        public async Task<WithdrawalCreatedVm> CreateWithdrawalTransaction([FromBody] CreateWithdrawalTransactionCommand command)
         {
             return await _mediator.Send(command);
         }

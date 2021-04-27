@@ -1,0 +1,29 @@
+﻿<UFXMsg xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" scheme="WAY4Appl" direction="Rq" version="2.0" msg_type="Doc">
+  <MsgId>d9733feb-d278-4237-a3dd-632cb185a8ef</MsgId>
+  <Source app="RSMFRONT"/>
+  <MsgData>
+    <Doc>
+      <TransType>
+        <TransCode>
+          <MsgCode>WLT_CHECK_AV</MsgCode>
+        </TransCode>
+      </TransType>
+      <DocRefSet>
+        <Parm>
+          <ParmCode>SRN</ParmCode>
+          <Value>ADONS0000001</Value>
+        </Parm>
+      </DocRefSet>
+      <Requestor>
+        <CBSNumber>77072658595</CBSNumber>
+      </Requestor>
+      <Source>
+        <CBSNumber>77072658595</CBSNumber>
+      </Source>
+      <Transaction>
+        <Currency>KZT</Currency>
+        <Amount>300</Amount>
+      </Transaction>
+    </Doc>
+  </MsgData>
+</UFXMsg>

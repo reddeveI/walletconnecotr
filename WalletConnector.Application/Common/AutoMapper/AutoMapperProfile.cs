@@ -1,9 +1,12 @@
 ﻿using AutoMapper;
 using System.Linq;
 using WalletConnector.Application.Accounts.Commands.CreateAccount;
+using WalletConnector.Application.Accounts.Commands.HoldAccount;
+using WalletConnector.Application.Accounts.Commands.UnholdAccount;
 using WalletConnector.Application.Accounts.Queries.GetAccountInfo;
 using WalletConnector.Application.Infrastructure.Services.WalletService;
 using WalletConnector.Application.Transactions.Commands.CreateTransaction;
+using WalletConnector.Application.Transactions.Commands.CreateWithdrawalTransaction;
 using WalletConnector.Serializer.Models.Application;
 using WalletConnector.Serializer.Models.Document;
 using WalletConnector.Serializer.Models.Information;
@@ -58,6 +61,22 @@ namespace WalletConnector.Application.Common.AutoMapper
                     opt => opt.MapFrom(src => src.MsgData.Application.SubApplList.SubApplication.DataRs.ContractRs.FirstOrDefault().RsContract.Currency));
 
             CreateMap<DocumentRequest, TransactionCreatedVm>()
+                .ForPath(dest =>
+                    dest.Status,
+                    opt => opt.MapFrom(src => src.MsgData.Information.Status.RespCode));
+
+            CreateMap<DocumentRequest, WithdrawalCreatedVm>()
+                .ForPath(dest =>
+                    dest.Status,
+                    opt => opt.MapFrom(src => src.MsgData.Information.Status.RespCode));
+                      
+
+            CreateMap<DocumentRequest, AccountHoldedVm>()
+                .ForPath(dest =>
+                    dest.Status,
+                    opt => opt.MapFrom(src => src.MsgData.Information.Status.RespCode));
+
+            CreateMap<DocumentRequest, AccountUnholdedVm>()
                 .ForPath(dest =>
                     dest.Status,
                     opt => opt.MapFrom(src => src.MsgData.Information.Status.RespCode));
