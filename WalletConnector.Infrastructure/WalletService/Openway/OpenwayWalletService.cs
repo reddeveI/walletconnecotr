@@ -13,6 +13,7 @@ using WalletConnector.Application.Common.Exceptions;
 using WalletConnector.Application.Infrastructure.Services.WalletService;
 using WalletConnector.Application.Transactions.Commands.CreateTransaction;
 using WalletConnector.Application.Transactions.Commands.CreateWithdrawalTransaction;
+using WalletConnector.Domain.Transactrions;
 using WalletConnector.Serializer;
 using WalletConnector.Serializer.Models.Application;
 using WalletConnector.Serializer.Models.Document;
@@ -100,18 +101,17 @@ namespace WalletConnector.Infrastructure.WalletService.Openway
             return transactionCreated;
         }
 
-        public async Task<WithdrawalCreatedVm> CreateWithdrawal(string phone, string transactionId, string description, decimal amount, decimal commission, string currency, string messageCode, string transactionType, CancellationToken cancellationToken)
+        public async Task<WithdrawalCreatedVm> CreateWithdrawal(WithdrawalTransaction model, CancellationToken cancellationToken)
         {
             var request = DocumentBuilder
                 .CreateDefaultDocument()
-                .AddTransactionCode(messageCode, transactionType)
-                .AddTransactionId(transactionId)
-                .AddTransactionDescription(description)
-                .AddTransactionRequestorInfo(phone)
-                .AddTransactionSourceInfo(phone)
-                .AddTransactionAmount(currency, amount)
-                .AddExtraAmount(commission);
-
+                .AddTransactionCode(model.MessageCode, model.TransactionType)
+                .AddTransactionId(model.TransactionId)
+                .AddTransactionDescription(model.Description)
+                .AddTransactionRequestorInfo(model.Phone)
+                .AddTransactionSourceInfo(model.Phone)
+                .AddTransactionAmount(model.Currency, model.Amount)
+                .AddExtraAmount(model.Commission);
 
             var xmlMessage = request.ToXElement().ToString();
 

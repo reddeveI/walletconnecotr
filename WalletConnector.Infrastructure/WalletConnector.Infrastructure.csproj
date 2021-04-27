@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\WalletConnector.Application\WalletConnector.Application.csproj" />
+    <ProjectReference Include="..\WalletConnector.Domain\WalletConnector.Domain.csproj" />
   </ItemGroup>
 
 </Project>

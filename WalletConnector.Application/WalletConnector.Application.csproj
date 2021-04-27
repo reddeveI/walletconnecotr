@@ -17,6 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\WalletConnector.Domain\WalletConnector.Domain.csproj" />
     <ProjectReference Include="..\WalletConnector.Serializer\WalletConnector.Serializer.csproj" />
   </ItemGroup>
 

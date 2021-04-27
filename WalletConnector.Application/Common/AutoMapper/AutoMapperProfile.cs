@@ -8,6 +8,7 @@ using WalletConnector.Application.Accounts.Queries.GetAccountInfo;
 using WalletConnector.Application.Infrastructure.Services.WalletService;
 using WalletConnector.Application.Transactions.Commands.CreateTransaction;
 using WalletConnector.Application.Transactions.Commands.CreateWithdrawalTransaction;
+using WalletConnector.Domain.Transactrions;
 using WalletConnector.Serializer.Models.Application;
 using WalletConnector.Serializer.Models.Document;
 using WalletConnector.Serializer.Models.Information;
@@ -19,6 +20,8 @@ namespace WalletConnector.Application.Common.AutoMapper
     {
         public AutoMapperProfile()
         {
+            CreateMap<CreateWithdrawalTransactionCommand, WithdrawalTransaction>();
+
             CreateMap<AccountInfoResponseDto, AccountInfoVm>()
                 .ForPath(dest =>
                     dest.Actual,
@@ -76,7 +79,6 @@ namespace WalletConnector.Application.Common.AutoMapper
                     dest.Status,
                     opt => opt.MapFrom(src => src.MsgData.Information.Status.RespCode));
                       
-
             CreateMap<DocumentRequest, AccountHoldedVm>()
                 .ForPath(dest =>
                     dest.Status,
