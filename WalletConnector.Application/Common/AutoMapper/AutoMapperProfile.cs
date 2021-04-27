@@ -3,7 +3,9 @@ using System.Linq;
 using WalletConnector.Application.Accounts.Commands.CreateAccount;
 using WalletConnector.Application.Accounts.Queries.GetAccountInfo;
 using WalletConnector.Application.Infrastructure.Services.WalletService;
+using WalletConnector.Application.Transactions.Commands.CreateTransaction;
 using WalletConnector.Serializer.Models.Application;
+using WalletConnector.Serializer.Models.Document;
 using WalletConnector.Serializer.Models.Information;
 using static WalletConnector.Application.Accounts.Queries.GetAccountInfo.AccountInfoVm;
 
@@ -54,6 +56,11 @@ namespace WalletConnector.Application.Common.AutoMapper
                 .ForPath(dest =>
                     dest.Currency,
                     opt => opt.MapFrom(src => src.MsgData.Application.SubApplList.SubApplication.DataRs.ContractRs.FirstOrDefault().RsContract.Currency));
+
+            CreateMap<DocumentRequest, TransactionCreatedVm>()
+                .ForPath(dest =>
+                    dest.Status,
+                    opt => opt.MapFrom(src => src.MsgData.Information.Status.RespCode));
 
             CreateMap<InformationRequest, AccountInfoResponseDto>()
                  .ForPath(dest =>

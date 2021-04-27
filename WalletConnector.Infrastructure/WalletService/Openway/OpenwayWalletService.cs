@@ -9,8 +9,10 @@ using System.Threading.Tasks;
 using WalletConnector.Application.Accounts.Commands.CreateAccount;
 using WalletConnector.Application.Common.Exceptions;
 using WalletConnector.Application.Infrastructure.Services.WalletService;
+using WalletConnector.Application.Transactions.Commands.CreateTransaction;
 using WalletConnector.Serializer;
 using WalletConnector.Serializer.Models.Application;
+using WalletConnector.Serializer.Models.Document;
 using WalletConnector.Serializer.Models.Information;
 
 namespace WalletConnector.Infrastructure.WalletService.Openway
@@ -70,6 +72,26 @@ namespace WalletConnector.Infrastructure.WalletService.Openway
             AccountCreatedVm accountCreated = _mapper.Map<AccountCreatedVm>(result);
 
             return accountCreated;
+        }
+
+
+        public async Task<TransactionCreatedVm> CreateTransaction(string from, string to, string amount, string currency, CancellationToken cancellationToken)
+        {
+            var request = DocumentBuilder
+                .CreateDefaultDocument()
+                .AddTransactionType()
+                .AddTransactionInfo(from, to)
+                .AddTransactionAmount(currency, amount);
+
+            var xmlMessage = request.ToXElement().ToString();
+
+            var response = await _sendWalletRequest(url: _config.Url, xmlMessage: xmlMessage);
+
+            var result = response.FromXElement<DocumentRequest>();
+
+            TransactionCreatedVm transactionCreated = _mapper.Map<TransactionCreatedVm>(result);
+
+            return transactionCreated;
         }
 
         private async Task<string> _sendWalletRequest(string url, string xmlMessage)
