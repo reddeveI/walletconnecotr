@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using WalletConnector.Application.Common.Exceptions;
 using WalletConnector.Application.Infrastructure.Services.WalletService;
+using WalletConnector.Domain.Transactrions;
 
 namespace WalletConnector.Application.Transactions.Commands.CreateTransaction
 {
@@ -26,15 +27,18 @@ namespace WalletConnector.Application.Transactions.Commands.CreateTransaction
 
         public async Task<TransactionCreatedVm> Handle(CreateTransactionCommand request, CancellationToken cancellationToken)
         {
-            var createTransactionRequest = await _walletService.CreateTransaction(request.From, request.To, request.Amount, request.Currency, 
-                request.MessageCode, request.TransactionType, cancellationToken, transactionId: null);
+            var transactionRequest = _mapper.Map<PersonToPersonTransaction>(request);
 
-            if (createTransactionRequest.Status != 0)
+            var walletResponse = await _walletService.CreateTransaction(transactionRequest, cancellationToken);
+
+            if (walletResponse.Status != 0)
             {
                 throw new BadRequestException();
             }
 
-            return createTransactionRequest;
+            var transactionCreatedResult = _mapper.Map<TransactionCreatedVm>(walletResponse);
+
+            return transactionCreatedResult;
         }
     }
 

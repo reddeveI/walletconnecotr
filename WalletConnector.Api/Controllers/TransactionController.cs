@@ -4,6 +4,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Threading.Tasks;
 using WalletConnector.Application.Transactions.Commands.CreateExternalTransaction;
+using WalletConnector.Application.Transactions.Commands.CreatePaymentTransaction;
 using WalletConnector.Application.Transactions.Commands.CreateTransaction;
 using WalletConnector.Application.Transactions.Commands.CreateWithdrawalTransaction;
 
@@ -37,6 +38,12 @@ namespace WalletConnector.Api.Controllers
 
         [HttpPost, Route("withdrawal/confirm")]
         public async Task<WithdrawalCreatedVm> CreateWithdrawalTransaction([FromBody] CreateWithdrawalTransactionCommand command)
+        {
+            return await _mediator.Send(command);
+        }
+
+        [HttpPost, Route("paynet/service/pay")]
+        public async Task<PaymentTransactionCreatedVm> CreatePaymentTransaction([FromBody] CreatePaymentTransactionCommand command)
         {
             return await _mediator.Send(command);
         }

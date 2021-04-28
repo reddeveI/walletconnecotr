@@ -6,8 +6,7 @@ using WalletConnector.Application.Accounts.Commands.UnholdAccount;
 using WalletConnector.Application.Accounts.Queries.CheckForPayment;
 using WalletConnector.Application.Accounts.Queries.GetAccountInfo;
 using WalletConnector.Application.Infrastructure.Services.WalletService;
-using WalletConnector.Application.Transactions.Commands.CreateTransaction;
-using WalletConnector.Application.Transactions.Commands.CreateWithdrawalTransaction;
+using WalletConnector.Domain.Accounts;
 using WalletConnector.Serializer.Models.Application;
 using WalletConnector.Serializer.Models.Document;
 using WalletConnector.Serializer.Models.Information;
@@ -15,10 +14,49 @@ using static WalletConnector.Application.Accounts.Queries.GetAccountInfo.Account
 
 namespace WalletConnector.Application.Common.AutoMapper
 {
-    public class AutoMapperProfile : Profile
+    public class AccountMapperProfile : Profile
     {
-        public AutoMapperProfile()
+        public AccountMapperProfile()
         {
+            CreateMap<HoldAccountCommand, HoldAccount>()
+                .ForMember(dest => dest.TransactionId, opt => opt.MapFrom(src => src.Srn));
+
+            CreateMap<DocumentRequest, HoldAccountCreated>()
+                .ForPath(dest =>
+                    dest.Status,
+                    opt => opt.MapFrom(src => src.MsgData.Information.Status.RespCode));
+
+            CreateMap<HoldAccountCreated, AccountHoldedVm>();
+
+
+            CreateMap<UnholdAccountCommand, UnholdAccount>();
+
+            CreateMap<DocumentRequest, UnholdAccountCreated>()
+                .ForPath(dest =>
+                    dest.Status,
+                    opt => opt.MapFrom(src => src.MsgData.Information.Status.RespCode));
+
+            CreateMap<UnholdAccountCreated, AccountUnholdedVm>();
+
+
+            CreateMap<ApplicationRequest, AccountCreated>()
+                .ForPath(dest =>
+                    dest.Phone,
+                    opt => opt.MapFrom(src => src.MsgData.Application.SubApplList.SubApplication.DataRs.ContractRs.FirstOrDefault().RsContract.ContractIdt.CbsNumber))
+                .ForPath(dest =>
+                    dest.Currency,
+                    opt => opt.MapFrom(src => src.MsgData.Application.SubApplList.SubApplication.DataRs.ContractRs.FirstOrDefault().RsContract.Currency));
+
+            CreateMap<AccountCreated, AccountCreatedVm>();
+
+            CreateMap<ApplicationRequest, PaymentCheckVm>()
+                .ForPath(dest =>
+                    dest.Status,
+                    opt => opt.MapFrom(src => src.MsgData.Information.Status.RespCode));
+
+
+
+
             CreateMap<AccountInfoResponseDto, AccountInfoVm>()
                 .ForPath(dest =>
                     dest.Actual,
@@ -33,9 +71,9 @@ namespace WalletConnector.Application.Common.AutoMapper
                                     Pan = src.Wallet.Balance,
                                     CardId  = src.Wallet.CardId,
                                     IssContractId = src.Wallet.IssContractId,
-                                    UserData = new() 
-                                    { 
-                                        Iin = src.User.Iin, 
+                                    UserData = new()
+                                    {
+                                        Iin = src.User.Iin,
                                         FirstName = src.User.FirstName,
                                         LastName = src.User.LastName,
                                         MiddleName = src.User.MiddleName,
@@ -52,40 +90,6 @@ namespace WalletConnector.Application.Common.AutoMapper
                                 }
                             }
                         }));
-
-            CreateMap<ApplicationRequest, AccountCreatedVm>()
-                .ForPath(dest =>
-                    dest.Phone,
-                    opt => opt.MapFrom(src => src.MsgData.Application.SubApplList.SubApplication.DataRs.ContractRs.FirstOrDefault().RsContract.ContractIdt.CbsNumber))
-                .ForPath(dest =>
-                    dest.Currency,
-                    opt => opt.MapFrom(src => src.MsgData.Application.SubApplList.SubApplication.DataRs.ContractRs.FirstOrDefault().RsContract.Currency));
-
-            CreateMap<ApplicationRequest, PaymentCheckVm>()
-                .ForPath(dest =>
-                    dest.Status,
-                    opt => opt.MapFrom(src => src.MsgData.Information.Status.RespCode));
-
-            CreateMap<DocumentRequest, TransactionCreatedVm>()
-                .ForPath(dest =>
-                    dest.Status,
-                    opt => opt.MapFrom(src => src.MsgData.Information.Status.RespCode));
-
-            CreateMap<DocumentRequest, WithdrawalCreatedVm>()
-                .ForPath(dest =>
-                    dest.Status,
-                    opt => opt.MapFrom(src => src.MsgData.Information.Status.RespCode));
-                      
-
-            CreateMap<DocumentRequest, AccountHoldedVm>()
-                .ForPath(dest =>
-                    dest.Status,
-                    opt => opt.MapFrom(src => src.MsgData.Information.Status.RespCode));
-
-            CreateMap<DocumentRequest, AccountUnholdedVm>()
-                .ForPath(dest =>
-                    dest.Status,
-                    opt => opt.MapFrom(src => src.MsgData.Information.Status.RespCode));
 
             CreateMap<InformationRequest, AccountInfoResponseDto>()
                  .ForPath(dest =>
@@ -127,8 +131,8 @@ namespace WalletConnector.Application.Common.AutoMapper
                 .ForPath(dest =>
                     dest.User.IssueDate,
                     opt => opt.MapFrom(src => GetIssueData(src.MsgData.Information.DataRs.ContractRs.FirstOrDefault().RsContract.ContractIdt.Client.ClientInfo.RegNumberDetails, 1)))
-                .ForPath(dest =>                                                      
-                    dest.User.ExpiryDate,                                             
+                .ForPath(dest =>
+                    dest.User.ExpiryDate,
                     opt => opt.MapFrom(src => GetIssueData(src.MsgData.Information.DataRs.ContractRs.FirstOrDefault().RsContract.ContractIdt.Client.ClientInfo.RegNumberDetails, 2)))
                 .ForPath(dest =>
                     dest.Wallet.Balance,
@@ -159,5 +163,8 @@ namespace WalletConnector.Application.Common.AutoMapper
             }
             return text.Split(";")[index];
         }
+
     }
+
+    
 }

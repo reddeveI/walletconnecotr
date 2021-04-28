@@ -4,10 +4,18 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using WalletConnector.Application.Infrastructure.Services.WalletService;
+using domain = WalletConnector.Domain.Accounts;
 
 namespace WalletConnector.Application.Accounts.Commands.HoldAccount
 {
-    public record HoldAccountCommand(long TransactionId, string Phone, decimal Amount, decimal Commission) : IRequest<AccountHoldedVm>;
+    public record HoldAccountCommand(
+        long TransactionId, 
+        string Phone, 
+        decimal Amount, 
+        decimal Commission,
+        string MessageCode = "WLT_CHECK_AV",
+        string Srn = "ADONS0000001",
+        string Currency = "KZT") : IRequest<AccountHoldedVm>;
 
     public class HoldAccountCommandHandler : IRequestHandler<HoldAccountCommand, AccountHoldedVm>
     {
@@ -22,12 +30,13 @@ namespace WalletConnector.Application.Accounts.Commands.HoldAccount
 
         public async Task<AccountHoldedVm> Handle(HoldAccountCommand request, CancellationToken cancellationToken)
         {
-            var messageCode = "WLT_CHECK_AV";
-            var transactionId = "ADONS0000001";
+            var holdAcountRequest = _mapper.Map<domain.HoldAccount>(request);
 
-            var holdAccountRequest = await _walletService.HoldAccount(request.Phone, request.Amount + request.Commission, "KZT", messageCode, transactionId, cancellationToken);
+            var walletResponse = await _walletService.HoldAccount(holdAcountRequest, cancellationToken);
 
-            return holdAccountRequest;
+            var holdAccountResult = _mapper.Map<AccountHoldedVm>(walletResponse);
+
+            return holdAccountResult;
         }
     }
 }

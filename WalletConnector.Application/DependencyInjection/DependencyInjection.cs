@@ -12,7 +12,8 @@ namespace WalletConnector.Application.DependencyInjection
     {
         public static IServiceCollection AddApplication(this IServiceCollection services, Action<ClientKeys> configureKeys)
         {
-            services.AddAutoMapper(typeof(AutoMapperProfile).Assembly);
+            services.AddAutoMapper(typeof(TransactionMapperProfile).Assembly);
+            services.AddAutoMapper(typeof(AccountMapperProfile).Assembly);
             services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
             services.AddMediatR(Assembly.GetExecutingAssembly());
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(UnhandledExceptionBehaviour<,>));

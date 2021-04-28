@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using WalletConnector.Application.Common.Exceptions;
 using WalletConnector.Application.Infrastructure.Services.WalletService;
+using WalletConnector.Domain.Transactrions;
 
 namespace WalletConnector.Application.Transactions.Commands.CreateWithdrawalTransaction
 {
@@ -31,16 +32,18 @@ namespace WalletConnector.Application.Transactions.Commands.CreateWithdrawalTran
 
         public async Task<WithdrawalCreatedVm> Handle(CreateWithdrawalTransactionCommand request, CancellationToken cancellationToken)
         {
-            var createWithdrawalRequest = await _walletService.CreateWithdrawal(request.Phone, 
-                request.CustomerReference, request.Description, request.Amount, request.Commission, 
-                request.Currency, request.MessageCode, request.TransactionType, cancellationToken);
+            var withdrawalTransactionRequest = _mapper.Map<WithdrawalTransaction>(request);
 
-            if (createWithdrawalRequest.Status != 0)
+            var walletResponse = await _walletService.CreateWithdrawal(withdrawalTransactionRequest, cancellationToken);
+
+            if (walletResponse.Status != 0)
             {
                 throw new BadRequestException();
             }
 
-            return createWithdrawalRequest;
+            var transactionCreatedResult = _mapper.Map<WithdrawalCreatedVm>(walletResponse);
+
+            return transactionCreatedResult;
         }
     }
 }

@@ -1,0 +1,35 @@
+﻿<UFXMsg xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" scheme="WAY4Appl" direction="Rq" version="2.0" msg_type="Doc">
+  <MsgId>593c014b-834a-4ac9-9eed-68becba94aea</MsgId>
+  <Source app="RSMFRONT"/>
+  <MsgData>
+    <Doc>
+      <TransType>
+        <TransCode>
+          <MsgCode>account_transfer</MsgCode>
+          <TransTypeExtension>W2M</TransTypeExtension>
+        </TransCode>
+      </TransType>
+      <DocRefSet>
+        <Parm>
+          <ParmCode>SRN</ParmCode>
+          <Value>alt99999</Value>
+        </Parm>
+      </DocRefSet>
+      <Description>Платеж за услугу АТФБанк от клиента 77717545421</Description>
+      <Requestor>
+        <CBSNumber>77717545421</CBSNumber>
+      </Requestor>
+      <Destination>
+        <CBSNumber>225</CBSNumber>
+      </Destination>
+      <Transaction>
+        <Currency>KZT</Currency>
+        <Amount>14321</Amount>
+        <Extra>
+          <Type>CustomData</Type>
+          <Details>F009C105T4800</Details>
+        </Extra>
+      </Transaction>
+    </Doc>
+  </MsgData>
+</UFXMsg>
