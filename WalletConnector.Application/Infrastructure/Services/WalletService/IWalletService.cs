@@ -20,6 +20,8 @@ namespace WalletConnector.Application.Infrastructure.Services.WalletService
 
         Task<WithdrawalTransactionCreated> CreateWithdrawal(WithdrawalTransaction model, CancellationToken cancellationToken);
 
+        Task<PaymentTransactionCreated> CreatePaymentTransaction(PaymentTransaction model, CancellationToken cancellationToken);
+
         Task<HoldAccountCreated> HoldAccount(HoldAccount model, CancellationToken cancellationToken);
 
         Task<UnholdAccountCreated> UnholdAccount(UnholdAccount model, CancellationToken cancellationToken);

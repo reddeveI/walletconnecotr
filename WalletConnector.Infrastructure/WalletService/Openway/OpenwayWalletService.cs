@@ -101,6 +101,29 @@ namespace WalletConnector.Infrastructure.WalletService.Openway
             return transactionCreated;
         }
 
+        public async Task<PaymentTransactionCreated> CreatePaymentTransaction(PaymentTransaction model, CancellationToken cancellationToken)
+        {
+            var request = DocumentBuilder
+                .CreateDefaultDocument()
+                .AddTransactionType(model.MessageCode, model.TransactionType)
+                .AddTransactionId(model.TransactionId)
+                .AddTransactionDescription($"Платеж за услугу {model.ProviderName} от клиента {model.From}")
+                .AddTransactionRequestorInfo(model.From)
+                .AddTransactionDestinationInfo(model.To)
+                .AddTransactionAmount(model.Currency, model.Amount)
+                .AddExtraAmount(model.Commission);
+
+            var xmlMessage = request.ToXElement().ToString();
+
+            var response = await _sendWalletRequest(url: _config.Url, xmlMessage: xmlMessage);
+
+            var result = response.FromXElement<DocumentRequest>();
+
+            var paymentTransactionCreated = _mapper.Map<PaymentTransactionCreated>(result);
+
+            return paymentTransactionCreated;
+        }
+
         public async Task<WithdrawalTransactionCreated> CreateWithdrawal(WithdrawalTransaction model, CancellationToken cancellationToken)
         {
             var request = DocumentBuilder

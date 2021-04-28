@@ -7,6 +7,7 @@ using WalletConnector.Application.Accounts.Queries.CheckForPayment;
 using WalletConnector.Application.Accounts.Queries.GetAccountInfo;
 using WalletConnector.Application.Infrastructure.Services.WalletService;
 using WalletConnector.Application.Transactions.Commands.CreateExternalTransaction;
+using WalletConnector.Application.Transactions.Commands.CreatePaymentTransaction;
 using WalletConnector.Application.Transactions.Commands.CreateTransaction;
 using WalletConnector.Application.Transactions.Commands.CreateWithdrawalTransaction;
 using WalletConnector.Domain.Accounts;
@@ -27,7 +28,7 @@ namespace WalletConnector.Application.Common.AutoMapper
             CreateMap<DocumentRequest, PersonToPersonTransactionCreated>()
                 .ForPath(dest =>
                     dest.Status,
-                    opt => opt.MapFrom(src => src.MsgData.Information.Status.RespCode));
+                    opt => opt.MapFrom(src => src.MsgData.Doc.Status.RespCode));
 
             CreateMap<PersonToPersonTransactionCreated, TransactionCreatedVm>();
 
@@ -42,7 +43,24 @@ namespace WalletConnector.Application.Common.AutoMapper
             CreateMap<DocumentRequest, WithdrawalTransactionCreated>()
                 .ForPath(dest =>
                     dest.Status,
-                    opt => opt.MapFrom(src => src.MsgData.Information.Status.RespCode));
+                    opt => opt.MapFrom(src => src.MsgData.Doc.Status.RespCode));
+
+            CreateMap<CreatePaymentTransactionCommand, PaymentTransaction>()
+                .ForMember(dest => dest.Amount, opt => opt.MapFrom(src => src.UserTransfer.Amount))
+                .ForMember(dest => dest.Commission, opt => opt.MapFrom(src => src.UserTransfer.Fee))
+                .ForMember(dest => dest.Currency, opt => opt.MapFrom(src => src.UserTransfer.Currency))
+                .ForMember(dest => dest.From, opt => opt.MapFrom(src => src.UserTransfer.UserId))
+                .ForMember(dest => dest.To, opt => opt.MapFrom(src => src.UserTransfer.Prov.Id))
+                .ForMember(dest => dest.TransactionId, opt => opt.MapFrom(src => src.UserTransfer.RequestId))
+                .ForMember(dest => dest.ProviderName, opt => opt.MapFrom(src => src.UserTransfer.Prov.Name))
+                .ForMember(dest => dest.TransactionType, opt => opt.MapFrom(src => src.TransactionType));
+
+            CreateMap<DocumentRequest, PaymentTransactionCreated>()
+                .ForPath(dest =>
+                    dest.Status,
+                    opt => opt.MapFrom(src => src.MsgData.Doc.Status.RespCode));
+
+            CreateMap<PaymentTransactionCreated, PaymentTransactionCreatedVm>();
         }
     }
 }
