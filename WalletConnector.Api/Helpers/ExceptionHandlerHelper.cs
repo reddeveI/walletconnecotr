@@ -32,6 +32,15 @@ namespace WalletConnector.Api.Helpers
                     };
                     context.Response.StatusCode = (int)HttpStatusCode.NotFound;
                     break;
+                case BadRequestException nfe:
+                    details = new ProblemDetails
+                    {
+                        Type = "https://tools.ietf.org/html/rfc7231#section-6.5.4",
+                        Title = "The specified resource was not found.",
+                        Detail = nfe.Message
+                    };
+                    context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                    break;
                 case UnauthorizedAccessException uae:
                     details = new ProblemDetails
                     {

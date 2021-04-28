@@ -1,5 +1,6 @@
 using System;
 using WalletConnector.Serializer.Models.Application;
+using WalletConnector.Serializer.Models.Document;
 using WalletConnector.Serializer.Models.Information;
 
 namespace WalletConnector.Serializer.Models
@@ -40,6 +41,16 @@ namespace WalletConnector.Serializer.Models
                         }
                     };
                     break;
+                case MsgType.Document:
+                    request = new DocumentRequest();
+                    request.MsgData = new OpenwayModel.MsgDataType()
+                    {
+                        Doc = new OpenwayModel.DocumentType
+                        {
+
+                        }
+                    };
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(msgType), msgType, null);
             }
@@ -57,6 +68,7 @@ namespace WalletConnector.Serializer.Models
     public enum MsgType
     {
         Application,
-        Information
+        Information,
+        Document
     }
 }

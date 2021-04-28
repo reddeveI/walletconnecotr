@@ -43,6 +43,9 @@ namespace WalletConnector.Serializer
 
             [XmlElement("Information")]
             public InformationType Information { get; set; }
+
+            [XmlElement("Doc")]
+            public DocumentType Doc { get; set; }
         }
 
         public class ApplicationType
@@ -438,6 +441,87 @@ namespace WalletConnector.Serializer
 
             [XmlElement("Code")]
             public string Code { get; set; }
+        }
+
+        public class DocumentType
+        {
+            [XmlElement("TransType")]
+            public TransType TransType { get; set; }
+
+            [XmlElement("DocRefSet")]
+            public DocRefSet DocRefSet { get; set; }
+
+            [XmlElement("Description")]
+            public string Description { get; set; }
+
+            [XmlElement("Requestor")]
+            public ContractOwner Requestor { get; set; }
+
+            [XmlElement("Source")]
+            public ContractOwner Source { get; set; }
+
+            [XmlElement("Destination")]
+            public ContractOwner Destination { get; set; }
+
+            [XmlElement("Transaction")]
+            public Transaction Transaction { get; set; }
+
+            [XmlElement("Status")]
+            public Status Status { get; set; }
+        }
+
+        public class TransType
+        {
+            [XmlElement("TransCode")]
+            public TransCode TransCode { get; set; }
+        }
+
+        public class TransCode
+        {
+            [XmlElement("MsgCode")]
+            public string MsgCode { get; set; }
+
+            [XmlElement("ServiceCode")]
+            public string ServiceCode { get; set; }
+
+            [XmlElement("TransTypeExtension")]
+            public string TransTypeExtension { get; set; }
+        }
+
+        public class DocRefSet
+        {
+            [XmlElement("Parm")]
+            public Parm Parm { get; set; }
+        }
+
+        public class ContractOwner
+        {
+            [XmlElement("ContractNumber")]
+            public string ContractNumber { get; set; }
+
+            [XmlElement("CBSNumber")]
+            public string CbsNumber { get; set; }
+        }
+
+        public class Transaction
+        {
+            [XmlElement("Currency")]
+            public string Currency { get; set; }
+
+            [XmlElement("Amount")]
+            public decimal Amount { get; set; }
+
+            [XmlElement("Extra")]
+            public Extra Extra { get; set; }
+        }
+
+        public class Extra
+        {
+            [XmlElement("Type")]
+            public string Type { get; set; }
+
+            [XmlElement("Details")]
+            public string Details { get; set; }
         }
 
     }

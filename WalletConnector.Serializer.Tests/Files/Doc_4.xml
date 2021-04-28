@@ -1,0 +1,23 @@
+﻿<UFXMsg xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" scheme="WAY4Appl" direction="Rq" version="2.0" msg_type="Doc">
+  <MsgId>c77604ef-92af-4cba-82ba-cb10a9bc18b7</MsgId>
+  <Source app="RSMFRONT"/>
+  <MsgData>
+    <Doc>
+      <TransType>
+        <TransCode>
+          <MsgCode>WLT_CLOSE_EVNT</MsgCode>
+        </TransCode>
+      </TransType>
+      <Requestor>
+        <CBSNumber>77026759185</CBSNumber>
+      </Requestor>
+      <Source>
+        <CBSNumber>77026759185</CBSNumber>
+      </Source>
+      <Transaction>
+        <Currency>KZT</Currency>
+        <Amount>10</Amount>
+      </Transaction>
+    </Doc>
+  </MsgData>
+</UFXMsg>
