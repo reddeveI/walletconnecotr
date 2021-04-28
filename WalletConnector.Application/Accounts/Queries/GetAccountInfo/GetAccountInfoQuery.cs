@@ -24,9 +24,9 @@ namespace WalletConnector.Application.Accounts.Queries.GetAccountInfo
 
         public async Task<AccountInfoVm> Handle(GetAccountInfoQuery request, CancellationToken cancellationToken)
         {
-            var getInfoRequest = await _walletService.GetAccountInfo(request.Phone);
+            var walletResponse = await _walletService.GetAccountInfo(request.Phone);
 
-            return _mapper.Map<AccountInfoVm>(getInfoRequest);
+            return _mapper.Map<AccountInfoVm>(walletResponse);
         }
     }
 }

@@ -8,6 +8,7 @@ using WalletConnector.Application.Common.Exceptions;
 using WalletConnector.Application.DependencyInjection;
 using WalletConnector.Application.Infrastructure.Services.WalletService;
 using WalletConnector.Application.Transactions.Commands.CreateTransaction;
+using WalletConnector.Domain.Transactrions;
 
 namespace WalletConnector.Application.Transactions.Commands.CreateExternalTransaction
 {
@@ -38,7 +39,8 @@ namespace WalletConnector.Application.Transactions.Commands.CreateExternalTransa
 
         public async Task<TransactionCreatedVm> Handle(CreateExternalTransactionCommand request, CancellationToken cancellationToken)
         {
-            TransactionCreatedVm createTransactionRequest;
+            
+            TransactionCreatedVm transactionCreatedResult;
 
             try
             {
@@ -49,18 +51,20 @@ namespace WalletConnector.Application.Transactions.Commands.CreateExternalTransa
             }
             finally
             {
-                var masterWallet = _keys.Value.Keys[request.Token];
+                request = request with { Token = _keys.Value.Keys[request.Token] };
+                var transactionRequest = _mapper.Map<PersonToPersonTransaction>(request);
 
-                createTransactionRequest = await _walletService.CreateTransaction(masterWallet, request.User, request.Amount,
-                    request.Currency, request.MessageCode, request.TransactionType, cancellationToken, request.TransactionId);
+                var walletResponse = await _walletService.CreateTransaction(transactionRequest, cancellationToken);
 
-                if (createTransactionRequest.Status != 0)
+                if (walletResponse.Status != 0)
                 {
                     throw new BadRequestException();
                 }
+
+                transactionCreatedResult = _mapper.Map<TransactionCreatedVm>(walletResponse);
             }
 
-            return createTransactionRequest;
+            return transactionCreatedResult;
         }
     }
 }

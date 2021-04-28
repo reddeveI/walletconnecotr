@@ -34,14 +34,16 @@ namespace WalletConnector.Application.Transactions.Commands.CreateWithdrawalTran
         {
             var withdrawalTransactionRequest = _mapper.Map<WithdrawalTransaction>(request);
 
-            var createWithdrawalRequest = await _walletService.CreateWithdrawal(withdrawalTransactionRequest, cancellationToken);
+            var walletResponse = await _walletService.CreateWithdrawal(withdrawalTransactionRequest, cancellationToken);
 
-            if (createWithdrawalRequest.Status != 0)
+            if (walletResponse.Status != 0)
             {
                 throw new BadRequestException();
             }
 
-            return createWithdrawalRequest;
+            var transactionCreatedResult = _mapper.Map<WithdrawalCreatedVm>(walletResponse);
+
+            return transactionCreatedResult;
         }
     }
 }

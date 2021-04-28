@@ -5,7 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Accounts\" />
     <Folder Include="Emission\" />
   </ItemGroup>
 

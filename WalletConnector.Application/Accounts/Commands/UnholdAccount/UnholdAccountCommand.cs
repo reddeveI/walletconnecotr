@@ -1,16 +1,19 @@
 ﻿using AutoMapper;
 using MediatR;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using WalletConnector.Application.Infrastructure.Services.WalletService;
+using domain = WalletConnector.Domain.Accounts;
 
 namespace WalletConnector.Application.Accounts.Commands.UnholdAccount
 {
-    public record UnholdAccountCommand(long TransactionId, string Phone, decimal Amount) : IRequest<AccountUnholdedVm>;
+    public record UnholdAccountCommand(
+        long TransactionId, 
+        string Phone, 
+        decimal Amount,
+        string MessageCode = "WLT_CLOSE_EVNT",
+        string Currency = "KZT") : IRequest<AccountUnholdedVm>;
 
     public class UnholdAccountCommandHandler : IRequestHandler<UnholdAccountCommand, AccountUnholdedVm>
     {
@@ -25,11 +28,13 @@ namespace WalletConnector.Application.Accounts.Commands.UnholdAccount
 
         public async Task<AccountUnholdedVm> Handle(UnholdAccountCommand request, CancellationToken cancellationToken)
         {
-            var messageCode = "WLT_CLOSE_EVNT";
+            var unholdAccountRequest = _mapper.Map<domain.UnholdAccount>(request);
 
-            var unholdAccountRequest = await _walletService.UnholdAccount(request.Phone, request.Amount, "KZT", messageCode, cancellationToken);
+            var walletResponse = await _walletService.UnholdAccount(unholdAccountRequest, cancellationToken);
 
-            return unholdAccountRequest;
+            var holdAccountResult = _mapper.Map<AccountUnholdedVm>(walletResponse);
+
+            return holdAccountResult;
         }
     }
 }

@@ -1,9 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using WalletConnector.Application.Common.Exceptions;
@@ -65,14 +62,14 @@ namespace WalletConnector.Application.Accounts.Queries.CheckForPayment
 
         public async Task<PaymentCheckVm> Handle(CheckForPaymentQuery request, CancellationToken cancellationToken)
         {
-            var getInfoRequest = await _walletService.GetAccountInfo(request.UserTransfer.UserId);
+            var walletResponse = await _walletService.GetAccountInfo(request.UserTransfer.UserId);
 
-            if (decimal.Parse(getInfoRequest.Wallet.Balance) <= request.UserTransfer.Amount)
+            if (decimal.Parse(walletResponse.Wallet.Balance) <= request.UserTransfer.Amount)
             {
                 throw new BadRequestException();
             }
 
-            return _mapper.Map<PaymentCheckVm>(getInfoRequest);
+            return _mapper.Map<PaymentCheckVm>(walletResponse);
         }
     }
 }

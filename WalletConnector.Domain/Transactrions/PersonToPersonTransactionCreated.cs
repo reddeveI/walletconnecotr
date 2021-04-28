@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace WalletConnector.Domain.Transactrions
 {
-    public class WithdrawalTransactionCreated
+    public class PersonToPersonTransactionCreated
     {
         public int Status { get; set; }
     }

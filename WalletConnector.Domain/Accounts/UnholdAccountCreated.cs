@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WalletConnector.Domain.Transactrions
+namespace WalletConnector.Domain.Accounts
 {
-    public class WithdrawalTransactionCreated
+    public class UnholdAccountCreated
     {
-        public int Status { get; set; }
+        public string Status { get; set; }
     }
 }

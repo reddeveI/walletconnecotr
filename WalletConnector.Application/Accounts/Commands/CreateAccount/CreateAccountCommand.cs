@@ -22,11 +22,13 @@ namespace WalletConnector.Application.Accounts.Commands.CreateAccount
             _mapper = mapper;
         }
 
-        public Task<AccountCreatedVm> Handle(CreateAccountCommand request, CancellationToken cancellationToken)
+        public async Task<AccountCreatedVm> Handle(CreateAccountCommand request, CancellationToken cancellationToken)
         {
-            var createAccountRequest = _walletService.CreateAccount(request.Phone, request.Description, cancellationToken);
+            var walletResponse = await _walletService.CreateAccount(request.Phone, request.Description, cancellationToken);
 
-            return createAccountRequest;
+            var createAccountResult = _mapper.Map<AccountCreatedVm>(walletResponse);
+
+            return createAccountResult;
         }
     }
 }
